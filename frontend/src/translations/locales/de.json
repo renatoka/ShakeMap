@@ -1,0 +1,16 @@
+{
+    "HEADER" : {
+        "TITLE": "Weltweite seismische Aktivität",
+        "SUBTITLE": "Daten bereitgestellt von",
+        "DATE": "Datum"
+    },
+    "SETTINGS" : {
+        "TITLE": "Projekt Einstellungen",
+        "NUMBER_OF_EARTHQUAKES": "Anzahl der erdbeben",
+        "GLOBE_ROTATION" : "Globusrotation",
+        "DOT_PULSING" : "Punkt pulsiert",
+        "PROJECTION" : "Projektion",
+        "DEFAULT" : "Standard",
+        "TYPES" : "Typen"
+    }
+}
