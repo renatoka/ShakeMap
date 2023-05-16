@@ -9,6 +9,7 @@ import App from './App';
 import './index.css';
 import { ErrorPage } from './pages/ErrorPage/ErrorPage';
 import { store } from './redux/store';
+import './translations/i18n';
 
 const router = createBrowserRouter([
   {
