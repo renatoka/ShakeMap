@@ -18,6 +18,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useTranslation } from 'react-i18next';
 
 export const Sidebar = ({
   zoomInCoordinates,
@@ -26,6 +27,7 @@ export const Sidebar = ({
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const { limit, selectedDate } = useAppSelector((state) => state.settings);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (zoomInCoordinates) {
@@ -50,7 +52,7 @@ export const Sidebar = ({
 
   return (
     <motion.div
-      className="fixed bottom-0 lg:top-0 lg:left-0 lg:max-w-[450px] w-full bg-black bg-opacity-50 backdrop-blur-sm z-20"
+      className="fixed bottom-0 lg:top-0 lg:left-0 lg:max-w-[25%] w-full bg-black bg-opacity-50 backdrop-blur-sm z-20"
       initial={
         window.innerWidth <= 1024
           ? { height: '5%', opacity: 1 }
@@ -78,11 +80,11 @@ export const Sidebar = ({
             <div className="flex flex-col items-start justify-center">
               <div className="flex items-center">
                 <h1 className="text-white text-xl font-medium">
-                  Worldwide Seismic Activity
+                  {t('HEADER.TITLE')}
                 </h1>
               </div>
               <p className="text-white text-sm">
-                Data provided by{' '}
+                {t('HEADER.SUBTITLE')}{' '}
                 <Link
                   to={'https://www.seismicportal.eu/'}
                   target="_blank"
@@ -92,7 +94,9 @@ export const Sidebar = ({
                 </Link>
               </p>
               <div className="flex items-center gap-2">
-                <p className="text-white text-sm font-medium">Date: </p>
+                <p className="text-white text-sm font-medium">
+                  {t('HEADER.DATE')}:{' '}
+                </p>
                 <DatePicker
                   onChange={handleDateChange}
                   value={String(new Date(selectedDate).toLocaleDateString())}
@@ -190,6 +194,7 @@ export const SettingsList = () => {
   ];
 
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const { limit, selectedDate } = useAppSelector((state) => state.settings);
 
   useEffect(() => {
@@ -230,16 +235,18 @@ export const SettingsList = () => {
         <div className="flex flex-col w-full h-full md:mt-0">
           <div className="mb-3">
             <h1 className="text-white text-2xl font-medium">
-              Project Settings
+              {t('SETTINGS.TITLE')}
             </h1>
           </div>
           <div className="flex flex-col gap-3">
             <div className="flex justify-between">
               <div>
                 <h1 className="text-white text-lg font-medium">
-                  Number of earthquakes
+                  {t('SETTINGS.NUMBER_OF_EARTHQUAKES')}
                 </h1>
-                <p className="text-gray-300 text-sm italic">(Default: 20)</p>
+                <p className="text-gray-300 text-sm italic">
+                  ({t('SETTINGS.DEFAULT')}: 20)
+                </p>
               </div>
               <div className="flex items-end gap-2">
                 <input
@@ -256,9 +263,11 @@ export const SettingsList = () => {
             <div className="flex justify-between">
               <div>
                 <h1 className="text-white text-lg font-medium">
-                  Globe Rotation
+                  {t('SETTINGS.GLOBE_ROTATION')}
                 </h1>
-                <p className="text-gray-300 text-sm italic">(Default: No)</p>
+                <p className="text-gray-300 text-sm italic">
+                  ({t('SETTINGS.DEFAULT')}: No)
+                </p>
               </div>
               <div className="flex items-end">
                 <input
@@ -273,8 +282,12 @@ export const SettingsList = () => {
             </div>
             <div className="flex justify-between">
               <div>
-                <h1 className="text-white text-lg font-medium">Dot Pulsing</h1>
-                <p className="text-gray-300 text-sm italic">(Default: Yes)</p>
+                <h1 className="text-white text-lg font-medium">
+                  {t('SETTINGS.DOT_PULSING')}
+                </h1>
+                <p className="text-gray-300 text-sm italic">
+                  ({t('SETTINGS.DEFAULT')}: Yes)
+                </p>
               </div>
               <div className="flex items-end">
                 <input
@@ -289,9 +302,11 @@ export const SettingsList = () => {
             </div>
             <div className="flex justify-between">
               <div className="w-full">
-                <h1 className="text-white text-lg font-medium">Projection</h1>
+                <h1 className="text-white text-lg font-medium">
+                  {t('SETTINGS.PROJECTION')}
+                </h1>
                 <p className="text-gray-300 text-sm italic">
-                  (Default: Globe,{' '}
+                  ({t('SETTINGS.DEFAULT')}: Globe,{' '}
                   <Link
                     to={
                       'https://visgl.github.io/react-map-gl/docs/api-reference/map#projection'
@@ -299,7 +314,7 @@ export const SettingsList = () => {
                     target="_blank"
                     className="underline"
                   >
-                    Types
+                    {t('SETTINGS.TYPES')}
                   </Link>
                   )
                 </p>
