@@ -1,0 +1,16 @@
+{
+  "HEADER": {
+    "TITLE": "Actividad sísmica mundial",
+    "SUBTITLE": "Datos proporcionados por",
+    "DATE": "Fecha"
+  },
+  "SETTINGS": {
+    "TITLE": "Configuración del proyecto",
+    "NUMBER_OF_EARTHQUAKES": "Número de terremotos",
+    "GLOBE_ROTATION": "Rotación del globo",
+    "DOT_PULSING": "Punto pulsante",
+    "PROJECTION": "Proyección",
+    "DEFAULT": "Predeterminado",
+    "TYPES": "Tipos"
+  }
+}
