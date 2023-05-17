@@ -60,7 +60,7 @@ export const Sidebar = ({
       }
       animate={
         window.innerWidth <= 1024
-          ? { height: modalOpen ? '100%' : '5%', opacity: 1 }
+          ? { height: modalOpen ? '100%' : '7%', opacity: 1 }
           : { height: '100%', opacity: 1 }
       }
       transition={{ ease: 'easeInOut', duration: 0.5 }}
@@ -76,12 +76,15 @@ export const Sidebar = ({
           </button>
         </div>
         <>
-          <div className="flex flex-col w-full h-full overflow-y-scroll gap-3">
-            <div className="flex flex-col items-start justify-center">
-              <div className="flex items-center">
-                <h1 className="text-white text-xl font-medium">
+          <div className="flex flex-col w-full h-full overflow-y-scroll">
+            <div className="flex flex-col items-start justify-center mb-3">
+              <div className="flex items-center justify-between w-full relative">
+                <h1 className="text-white text-xl font-medium whitespace-pre">
                   {t('HEADER.TITLE')}
                 </h1>
+                <div className="absolute right-0 top-0">
+                  <LanguageSwitcher />
+                </div>
               </div>
               <p className="text-white text-sm">
                 {t('HEADER.SUBTITLE')}{' '}
@@ -93,7 +96,7 @@ export const Sidebar = ({
                   Seismic Portal Europe
                 </Link>
               </p>
-              <div className="flex items-center gap-2">
+              <div className="flex w-full items-center gap-1">
                 <p className="text-white text-sm font-medium">
                   {t('HEADER.DATE')}:{' '}
                 </p>
@@ -234,7 +237,7 @@ export const SettingsList = () => {
       <div className="flex flex-col w-full h-full items-center gap-2">
         <div className="flex flex-col w-full h-full md:mt-0">
           <div className="mb-3">
-            <h1 className="text-white text-2xl font-medium">
+            <h1 className="text-white text-xl font-medium">
               {t('SETTINGS.TITLE')}
             </h1>
           </div>
@@ -335,6 +338,63 @@ export const SettingsList = () => {
           </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+export const LanguageSwitcher = () => {
+  const { i18n } = useTranslation();
+  const [showMenu, setShowMenu] = useState<boolean>(false);
+
+  const languages = [
+    {
+      code: 'en',
+      name: 'English',
+      img: 'https://hatscripts.github.io/circle-flags/flags/gb.svg',
+    },
+    {
+      code: 'de',
+      name: 'Deutsch',
+      img: 'https://hatscripts.github.io/circle-flags/flags/de.svg',
+    },
+    {
+      code: 'es',
+      name: 'Español',
+      img: 'https://hatscripts.github.io/circle-flags/flags/es.svg',
+    },
+  ];
+
+  return (
+    <div
+      className="rounded-full z-20"
+      onClick={() => setShowMenu(!showMenu)}
+      tabIndex={-1}
+      onBlur={() => setShowMenu(false)}
+    >
+      {showMenu ? (
+        <div className="flex flex-col gap-2">
+          {languages
+            .filter((lang) => lang.code != i18n.language)
+            .map((lang) => (
+              <img
+                src={lang.img}
+                alt={lang.name}
+                key={lang.code}
+                className="w-6 h-6 lg:w-7 lg:h-7 rounded-full transition-all duration-500 hover:scale-75 cursor-pointer"
+                onClick={() => {
+                  i18n.changeLanguage(lang.code);
+                  setShowMenu(false);
+                }}
+              />
+            ))}
+        </div>
+      ) : (
+        <img
+          src={languages.filter((lang) => lang.code == i18n.language)[0].img}
+          alt={languages.filter((lang) => lang.code == i18n.language)[0].name}
+          className="w-6 h-6 lg:w-7 lg:h-7 rounded-full transition-all duration-500 hover:scale-90 cursor-pointer"
+        />
+      )}
     </div>
   );
 };
