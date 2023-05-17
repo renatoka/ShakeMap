@@ -17,7 +17,7 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    host: true,
+    host: process.env.NODE_ENV == 'development' ? true : false,
     proxy: {
       '/api': {
         target: 'http://localhost:3001',
