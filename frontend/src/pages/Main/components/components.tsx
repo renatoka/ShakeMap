@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { Link } from 'react-router-dom';
-import { CapitalizeString } from '../../helpers/capitalize.services';
-import { Colouring } from '../../helpers/colouring.services';
-import { SidebarProps } from '../../interfaces';
+import { CapitalizeString } from '../../../helpers/capitalize.services';
+import { Colouring } from '../../../helpers/colouring.services';
+import { SidebarProps } from '../../../interfaces';
 import {
   fetchAndGetEarthquakesByDate,
   getEarthquakes,
@@ -14,11 +14,12 @@ import {
   setProjectionAction,
   setRotatingAction,
   setSelectedDateAction,
-} from '../../redux/actions';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+} from '../../../redux/actions';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
+import Select from 'react-select';
 
 export const Sidebar = ({
   zoomInCoordinates,
@@ -185,20 +186,19 @@ export const EarthquakeList = ({ setZoomInCoordinates }: SidebarProps) => {
 
 export const SettingsList = () => {
   const [projection, setProjection] = useState<string>();
-  const projections = [
-    'albers',
-    'equalEarth',
-    'equirectangular',
-    'mercator',
-    'lambertConformalConic',
-    'naturalEarth',
-    'winkelTripel',
-    'globe',
-  ];
-
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { limit, selectedDate } = useAppSelector((state) => state.settings);
+  const projections = [
+    { value: 'albers', label: 'Albers' },
+    { value: 'equalEarth', label: 'Equal Earth' },
+    { value: 'equirectangular', label: 'Equirectangular' },
+    { value: 'mercator', label: 'Mercator' },
+    { value: 'lambertConformalConic', label: 'Lambert Conformal Conic' },
+    { value: 'naturalEarth', label: 'Natural Earth' },
+    { value: 'winkelTripel', label: 'Winkel Tripel' },
+    { value: 'globe', label: 'Globe' },
+  ];
 
   useEffect(() => {
     const start = String(
@@ -225,23 +225,23 @@ export const SettingsList = () => {
         );
   }, [limit, selectedDate]);
 
-  useEffect(() => {
-    projection &&
-      projection != '' &&
-      projections.includes(projection) &&
-      dispatch(setProjectionAction(projection));
-  }, [projection]);
+  // useEffect(() => {
+  //   projection &&
+  //     projection != '' &&
+  //     projections.includes(projection) &&
+  //     dispatch(setProjectionAction(projection));
+  // }, [projection]);
 
   return (
     <div className="w-full rounded-b-lg block">
-      <div className="flex flex-col w-full h-full items-center gap-2">
-        <div className="flex flex-col w-full h-full md:mt-0">
+      <div className="flex flex-col w-full items-center gap-2">
+        <div className="flex flex-col w-full md:mt-0">
           <div className="mb-3">
             <h1 className="text-white text-xl font-medium">
               {t('SETTINGS.TITLE')}
             </h1>
           </div>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2 overflow-x-hidden">
             <div className="flex justify-between">
               <div>
                 <h1 className="text-white text-lg font-medium">
@@ -251,7 +251,7 @@ export const SettingsList = () => {
                   ({t('SETTINGS.DEFAULT')}: 20)
                 </p>
               </div>
-              <div className="flex items-end gap-2">
+              <div className="flex items-end">
                 <input
                   type="text"
                   className="w-8 text-center bg-transparent text-white text-lg font-medium border-b-2 border-white focus:outline-none"
@@ -309,29 +309,19 @@ export const SettingsList = () => {
                   {t('SETTINGS.PROJECTION')}
                 </h1>
                 <p className="text-gray-300 text-sm italic">
-                  ({t('SETTINGS.DEFAULT')}: Globe,{' '}
-                  <Link
-                    to={
-                      'https://visgl.github.io/react-map-gl/docs/api-reference/map#projection'
-                    }
-                    target="_blank"
-                    className="underline"
-                  >
-                    {t('SETTINGS.TYPES')}
-                  </Link>
-                  )
+                  ({t('SETTINGS.DEFAULT')}: Globe)
                 </p>
               </div>
-              <div className="flex items-end">
-                <input
-                  type="text"
-                  className="text-right w-full bg-transparent text-white text-lg font-medium border-b-2 border-white focus:outline-none"
-                  defaultValue={CapitalizeString(
-                    useAppSelector((state) => state.settings.projection),
+              <div className="flex items-end w-full justify-end">
+                <Select
+                  options={projections as any}
+                  defaultValue={useAppSelector(
+                    (state) => state.settings.projection,
                   )}
-                  onChange={(e) => {
-                    setProjection(e.currentTarget.value);
+                  onChange={(e: any) => {
+                    dispatch(setProjectionAction(e?.value));
                   }}
+                  menuPlacement="auto"
                 />
               </div>
             </div>
@@ -366,7 +356,7 @@ export const LanguageSwitcher = () => {
 
   return (
     <div
-      className="rounded-full z-20"
+      className="rounded-full"
       onClick={() => setShowMenu(!showMenu)}
       tabIndex={-1}
       onBlur={() => setShowMenu(false)}

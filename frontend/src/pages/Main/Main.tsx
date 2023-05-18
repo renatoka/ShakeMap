@@ -6,7 +6,7 @@ import { RouteErrorProps } from '../../interfaces/interfaces.types';
 import { getEarthquakes, getMapboxToken } from '../../redux/actions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { ErrorPage } from '../ErrorPage/ErrorPage';
-import { Sidebar } from '../components';
+import { Sidebar } from './components';
 
 export const Main = () => {
   const dispatch = useAppDispatch();
