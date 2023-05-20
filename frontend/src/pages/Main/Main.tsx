@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import Map, { MapRef } from 'react-map-gl';
-import { PulsingDot } from '../../components/components';
+import { PulsingDot, SubscribeModal } from '../../components/components';
 import { RotatingSpeed } from '../../helpers/rotatingSpeed.services';
 import { RouteErrorProps } from '../../interfaces/interfaces.types';
 import { getEarthquakes, getMapboxToken } from '../../redux/actions';
@@ -14,7 +14,9 @@ export const Main = () => {
     (state) => state.mapboxToken,
   );
   const { earthquakesData } = useAppSelector((state) => state.earthquakesData);
-  const { rotating, projection } = useAppSelector((state) => state.settings);
+  const { rotating, projection, showSubscribeModal } = useAppSelector(
+    (state) => state.settings,
+  );
   const [actionModalData, setActionModalData] = useState<RouteErrorProps>();
 
   const [mapRef, setMapRef] = useState<MapRef | null>(null);
@@ -30,6 +32,19 @@ export const Main = () => {
     latitude: 20,
     zoom: zoom,
   });
+
+  useEffect(() => {
+    if (projection != 'globe') {
+      setViewState({
+        ...viewState,
+        latitude: 0,
+      });
+    }
+    setViewState({
+      ...viewState,
+      latitude: 20,
+    });
+  }, [projection]);
 
   useEffect(() => {
     dispatch(getMapboxToken());
@@ -107,7 +122,7 @@ export const Main = () => {
     if (userInteracting) {
       return;
     }
-    if (mapRef && !userInteracting) {
+    if (mapRef && !userInteracting && projection === 'globe') {
       const center = { ...mapRef.getCenter() };
       center.lng -= 0.35;
       mapRef.easeTo({
@@ -117,7 +132,7 @@ export const Main = () => {
         easing: (t: number) => t,
       });
     }
-  }, [userInteracting, mapRef]);
+  }, [userInteracting, mapRef, projection]);
 
   useEffect(() => {
     if (rotating && !userInteracting) {
@@ -182,6 +197,7 @@ export const Main = () => {
         setZoomInCoordinates={setZoomInCoordinates}
         zoomInCoordinates={zoomInCoordinates}
       />
+      {showSubscribeModal && <SubscribeModal />}
     </>
   );
 };
