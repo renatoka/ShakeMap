@@ -14,6 +14,7 @@ const settingsSlice = createSlice({
     projection: 'globe',
     limit: 20,
     selectedDate: new Date().toISOString(),
+    showSubscribeModal: false,
   },
   reducers: {
     setRotating(state, action) {
@@ -31,6 +32,9 @@ const settingsSlice = createSlice({
     setSelectedDate(state, action) {
       state.selectedDate = action.payload;
     },
+    setShowSubscribeModal(state, action) {
+      state.showSubscribeModal = action.payload;
+    },
   },
 });
 
@@ -40,5 +44,6 @@ export const {
   setDisablePulsing,
   setLimit,
   setSelectedDate,
+  setShowSubscribeModal,
 } = settingsSlice.actions;
 export const settingsReducer = settingsSlice.reducer;

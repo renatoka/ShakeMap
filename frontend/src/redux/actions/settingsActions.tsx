@@ -4,6 +4,7 @@ import {
   setProjection,
   setRotating,
   setSelectedDate,
+  setShowSubscribeModal,
 } from '../reducers/settingsReducer';
 import { AppDispatch } from '../store';
 
@@ -29,4 +30,9 @@ export const setLimitAction = (limit: number) => (dispatch: AppDispatch) => {
 export const setSelectedDateAction =
   (date: string) => (dispatch: AppDispatch) => {
     dispatch(setSelectedDate(date));
+  };
+
+export const setShowSubscribeModalAction =
+  (showSubscribeModal: boolean) => (dispatch: AppDispatch) => {
+    dispatch(setShowSubscribeModal(showSubscribeModal));
   };
