@@ -12,6 +12,7 @@
     "PROJECTION": "Projection",
     "DEFAULT": "Default",
     "TYPES": "Types",
-    "REACT_SELECT_SEARCH_PLACEHOLDER": "Search..."
+    "REACT_SELECT_SEARCH_PLACEHOLDER": "Search...",
+    "SUBSCRIBE": "Subscribe"
   }
 }

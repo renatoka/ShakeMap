@@ -12,6 +12,7 @@
     "PROJECTION": "Proyección",
     "DEFAULT": "Predeterminado",
     "TYPES": "Tipos",
-    "REACT_SELECT_SEARCH_PLACEHOLDER": "Buscar..."
+    "REACT_SELECT_SEARCH_PLACEHOLDER": "Buscar...",
+    "SUBSCRIBE": "Suscribir"
   }
 }

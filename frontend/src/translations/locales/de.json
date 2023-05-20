@@ -12,6 +12,7 @@
     "PROJECTION": "Punkt pulsiert",
     "DEFAULT": "Standard",
     "TYPES": "Typen",
-    "REACT_SELECT_SEARCH_PLACEHOLDER": "Suchen..."
+    "REACT_SELECT_SEARCH_PLACEHOLDER": "Suchen...",
+    "SUBSCRIBE": "Abonnieren"
   }
 }
