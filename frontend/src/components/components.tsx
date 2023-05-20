@@ -1,9 +1,11 @@
 import { Marker } from 'react-map-gl';
 import { useMemo } from 'react';
 import { PulsingDotProps } from '../interfaces';
-import { useAppSelector } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { Colouring } from '../helpers/colouring.services';
 import Tippy from '@tippyjs/react';
+import Select from 'react-select';
+import { setProjectionAction } from '../redux/actions';
 
 export const PulsingDot = ({
   lon,
@@ -66,5 +68,58 @@ export const PulsingDot = ({
         </div>
       </Tippy>
     </Marker>
+  );
+};
+
+export const ReactSelect = () => {
+  const dispatch = useAppDispatch();
+
+  type OptionType = {
+    value: string;
+    label: string;
+  };
+
+  const options: OptionType[] = [
+    { value: 'globe', label: 'Globe' },
+    { value: 'albers', label: 'Albers' },
+    { value: 'mercator', label: 'Mercator' },
+    { value: 'naturalEarth', label: 'Natural Earth' },
+  ];
+
+  return (
+    <Select
+      options={options}
+      isSearchable={false}
+      defaultValue={options[0]}
+      menuPlacement="top"
+      styles={{
+        control: (provided) => ({
+          ...provided,
+          backgroundColor: 'transparent',
+          border: 'none',
+          boxShadow: 'none',
+        }),
+        menu: (provided) => ({
+          ...provided,
+          backgroundColor: 'black',
+        }),
+        option: (provided, state) => ({
+          ...provided,
+          backgroundColor: state.isSelected ? '#F97316' : 'black',
+          color: state.isSelected ? 'white' : 'white',
+          '&:hover': {
+            backgroundColor: '#F97316',
+            color: 'white',
+          },
+        }),
+        singleValue: (provided) => ({
+          ...provided,
+          color: 'white',
+        }),
+      }}
+      onChange={(e: any) => {
+        dispatch(setProjectionAction(e?.value));
+      }}
+    />
   );
 };

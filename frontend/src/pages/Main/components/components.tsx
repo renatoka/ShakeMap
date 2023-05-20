@@ -1,9 +1,12 @@
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Chip, CircularProgress } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import DatePicker from 'react-datepicker';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { CapitalizeString } from '../../../helpers/capitalize.services';
+import { ReactSelect } from '../../../components/components';
 import { Colouring } from '../../../helpers/colouring.services';
 import { SidebarProps } from '../../../interfaces';
 import {
@@ -11,24 +14,29 @@ import {
   getEarthquakes,
   setDisablePulsingAction,
   setLimitAction,
-  setProjectionAction,
   setRotatingAction,
   setSelectedDateAction,
 } from '../../../redux/actions';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useTranslation } from 'react-i18next';
-import Select from 'react-select';
 
 export const Sidebar = ({
   zoomInCoordinates,
   setZoomInCoordinates,
 }: SidebarProps) => {
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const { limit, selectedDate } = useAppSelector((state) => state.settings);
   const { t } = useTranslation();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const { limit, selectedDate } = useAppSelector((state) => state.settings);
+  const [locale, setLocale] = useState<string>();
+
+  useEffect(() => {
+    if (localStorage.getItem('locale') != null) {
+      setLocale(localStorage.getItem('locale')!);
+    } else {
+      console.warn('Locale not found, setting to en-GB');
+      setLocale('en-GB');
+    }
+  }, []);
 
   useEffect(() => {
     if (zoomInCoordinates) {
@@ -53,22 +61,22 @@ export const Sidebar = ({
 
   return (
     <motion.div
-      className="fixed bottom-0 lg:top-0 lg:left-0 lg:max-w-[25%] w-full bg-black bg-opacity-50 backdrop-blur-sm z-20"
+      className="fixed bottom-0 lg:top-0 lg:left-0 bg-black bg-opacity-50 backdrop-blur-sm z-20 w-full lg:w-1/3 xl:w-1/4"
       initial={
-        window.innerWidth <= 1024
+        window.innerWidth < 1024
           ? { height: '5%', opacity: 1 }
           : { height: '100%', opacity: 1 }
       }
       animate={
-        window.innerWidth <= 1024
+        window.innerWidth < 1024
           ? { height: modalOpen ? '100%' : '7%', opacity: 1 }
           : { height: '100%', opacity: 1 }
       }
       transition={{ ease: 'easeInOut', duration: 0.5 }}
     >
-      <div className="flex flex-col w-full h-full items-center gap-2 px-6 py-6 pt-0 lg:pt-6">
+      <div className="flex flex-col w-full h-full items-center justify-center gap-2 px-4 py-3 lg:pt-6">
         <div className={`${window.innerWidth >= 1024 ? 'hidden' : 'block'}`}>
-          <button className="mt-2" onClick={() => setModalOpen(!modalOpen)}>
+          <button onClick={() => setModalOpen(!modalOpen)}>
             {modalOpen ? (
               <ExpandMoreIcon className="text-white" />
             ) : (
@@ -103,7 +111,9 @@ export const Sidebar = ({
                 </p>
                 <DatePicker
                   onChange={handleDateChange}
-                  value={String(new Date(selectedDate).toLocaleDateString())}
+                  value={String(
+                    new Date(selectedDate).toLocaleDateString(locale),
+                  )}
                   selected={new Date(selectedDate)}
                   className={
                     'bg-transparent text-white text-sm outline-none cursor-pointer w-fit'
@@ -156,7 +166,7 @@ export const EarthquakeList = ({ setZoomInCoordinates }: SidebarProps) => {
             <h1 className="text-slate-300 text-xs font-medium">
               {new Date(earthquake.time).toLocaleTimeString()}
             </h1>
-            <div className="flex justify-between items-center lg:flex-col md:items-start xl:flex-row">
+            <div className="flex justify-between items-center">
               <p className="text-white text-base font-bold">
                 {earthquake.flynn_region}
               </p>
@@ -185,20 +195,9 @@ export const EarthquakeList = ({ setZoomInCoordinates }: SidebarProps) => {
 };
 
 export const SettingsList = () => {
-  const [projection, setProjection] = useState<string>();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { limit, selectedDate } = useAppSelector((state) => state.settings);
-  const projections = [
-    { value: 'albers', label: 'Albers' },
-    { value: 'equalEarth', label: 'Equal Earth' },
-    { value: 'equirectangular', label: 'Equirectangular' },
-    { value: 'mercator', label: 'Mercator' },
-    { value: 'lambertConformalConic', label: 'Lambert Conformal Conic' },
-    { value: 'naturalEarth', label: 'Natural Earth' },
-    { value: 'winkelTripel', label: 'Winkel Tripel' },
-    { value: 'globe', label: 'Globe' },
-  ];
 
   useEffect(() => {
     const start = String(
@@ -224,13 +223,6 @@ export const SettingsList = () => {
           }),
         );
   }, [limit, selectedDate]);
-
-  // useEffect(() => {
-  //   projection &&
-  //     projection != '' &&
-  //     projections.includes(projection) &&
-  //     dispatch(setProjectionAction(projection));
-  // }, [projection]);
 
   return (
     <div className="w-full rounded-b-lg block">
@@ -312,17 +304,8 @@ export const SettingsList = () => {
                   ({t('SETTINGS.DEFAULT')}: Globe)
                 </p>
               </div>
-              <div className="flex items-end w-full justify-end">
-                <Select
-                  options={projections as any}
-                  defaultValue={useAppSelector(
-                    (state) => state.settings.projection,
-                  )}
-                  onChange={(e: any) => {
-                    dispatch(setProjectionAction(e?.value));
-                  }}
-                  menuPlacement="auto"
-                />
+              <div className="w-full mt-auto">
+                <ReactSelect />
               </div>
             </div>
           </div>
@@ -370,7 +353,7 @@ export const LanguageSwitcher = () => {
                 src={lang.img}
                 alt={lang.name}
                 key={lang.code}
-                className="w-6 h-6 lg:w-7 lg:h-7 rounded-full transition-all duration-500 hover:scale-75 cursor-pointer"
+                className="w-6 h-6 lg:w-7 lg:h-7 transition-all duration-500 hover:scale-75 cursor-pointer"
                 onClick={() => {
                   i18n.changeLanguage(lang.code);
                   setShowMenu(false);
@@ -382,7 +365,7 @@ export const LanguageSwitcher = () => {
         <img
           src={languages.filter((lang) => lang.code == i18n.language)[0].img}
           alt={languages.filter((lang) => lang.code == i18n.language)[0].name}
-          className="w-6 h-6 lg:w-7 lg:h-7 rounded-full transition-all duration-500 hover:scale-90 cursor-pointer"
+          className="w-6 h-6 lg:w-7 lg:h-7 transition-all duration-500 hover:scale-90 cursor-pointer"
         />
       )}
     </div>
