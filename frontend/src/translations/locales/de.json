@@ -11,6 +11,7 @@
     "DOT_PULSING": "Dot pulsing",
     "PROJECTION": "Punkt pulsiert",
     "DEFAULT": "Standard",
-    "TYPES": "Typen"
+    "TYPES": "Typen",
+    "REACT_SELECT_SEARCH_PLACEHOLDER": "Suchen..."
   }
 }
