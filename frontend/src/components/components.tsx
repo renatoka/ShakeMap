@@ -5,7 +5,12 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { Colouring } from '../helpers/colouring.services';
 import Tippy from '@tippyjs/react';
 import Select from 'react-select';
-import { setProjectionAction } from '../redux/actions';
+import {
+  setProjectionAction,
+  setShowSubscribeModalAction,
+} from '../redux/actions';
+import { motion } from 'framer-motion';
+import CloseIcon from '@mui/icons-material/Close';
 
 export const PulsingDot = ({
   lon,
@@ -121,5 +126,59 @@ export const ReactSelect = () => {
         dispatch(setProjectionAction(e?.value));
       }}
     />
+  );
+};
+
+export const SubscribeModal = () => {
+  const dispatch = useAppDispatch();
+  return (
+    <motion.div
+      className="h-screen w-screen bg-black bg-opacity-50 backdrop-blur-sm z-50 fixed top-0 left-0"
+      animate={{ opacity: 1 }}
+      initial={{ opacity: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      <div className="flex flex-col items-center justify-center w-full h-full">
+        <div className="flex flex-col justify-center items-center w-full h-full md:w-1/2 md:h-1/2 bg-black rounded-lg text-white p-3 text-center gap-2 relative">
+          <div className="absolute top-0 right-0 m-4">
+            <CloseIcon
+              className="cursor-pointer"
+              onClick={() => dispatch(setShowSubscribeModalAction(false))}
+            />
+          </div>
+          <>
+            <h1 className="text-2xl md:text-3xl font-bold">
+              ShakeMap Newsletter
+            </h1>
+            <p className="text-sm md:text-base font-medium">
+              We will send you one email per day with the statistics of the last
+              24 hours. You can unsubscribe at any time. We will never share
+              your email address with anyone else.
+            </p>
+          </>
+          <div className="flex flex-col gap-2 mt-5 w-full">
+            <input
+              type="text"
+              placeholder="First Name"
+              className="bg-black text-white border-2 border-white rounded-md p-2 focus:outline-none"
+            />
+            <input
+              type="text"
+              placeholder="Last Name"
+              className="bg-black text-white border-2 border-white rounded-md p-2 focus:outline-none"
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              className="bg-black text-white border-2 border-white rounded-md p-2 focus:outline-none"
+            />
+            <button className="bg-white text-black rounded-md p-2">
+              Subscribe
+            </button>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 };

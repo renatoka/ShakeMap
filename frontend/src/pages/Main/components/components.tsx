@@ -16,6 +16,7 @@ import {
   setLimitAction,
   setRotatingAction,
   setSelectedDateAction,
+  setShowSubscribeModalAction,
 } from '../../../redux/actions';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 
@@ -225,7 +226,7 @@ export const SettingsList = () => {
   }, [limit, selectedDate]);
 
   return (
-    <div className="w-full rounded-b-lg block">
+    <div className="w-full">
       <div className="flex flex-col w-full items-center gap-2">
         <div className="flex flex-col w-full md:mt-0">
           <div className="mb-3">
@@ -233,7 +234,7 @@ export const SettingsList = () => {
               {t('SETTINGS.TITLE')}
             </h1>
           </div>
-          <div className="flex flex-col gap-2 overflow-x-hidden">
+          <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <div>
                 <h1 className="text-white text-lg font-medium">
@@ -246,7 +247,7 @@ export const SettingsList = () => {
               <div className="flex items-end">
                 <input
                   type="text"
-                  className="w-8 text-center bg-transparent text-white text-lg font-medium border-b-2 border-white focus:outline-none"
+                  className="w-8 text-center bg-transparent text-white text-lg font-medium border-b-2 border-white focus:outline-none outline-none"
                   defaultValue={limit ? limit : 20}
                   maxLength={3}
                   onInputCapture={(e) => {
@@ -307,6 +308,14 @@ export const SettingsList = () => {
               <div className="w-full mt-auto">
                 <ReactSelect />
               </div>
+            </div>
+            <div className="w-full">
+              <button
+                className="w-full bg-transparent text-white text-lg font-medium border-[1px] hover:bg-orange-500 hover:border-orange-500 border-white py-2 px-4 rounded-md focus:outline-none active:bg-orange-700 active:border-orange-700"
+                onClick={() => dispatch(setShowSubscribeModalAction(true))}
+              >
+                {t('SETTINGS.SUBSCRIBE')}
+              </button>
             </div>
           </div>
         </div>
