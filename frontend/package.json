@@ -21,6 +21,7 @@
     "i18next": "^22.4.15",
     "i18next-browser-languagedetector": "^7.0.1",
     "i18next-http-backend": "^2.2.0",
+    "joi": "^17.9.2",
     "localforage": "^1.10.0",
     "mapbox": "^1.0.0-beta10",
     "match-sorter": "^6.3.1",
