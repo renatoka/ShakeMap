@@ -33,3 +33,9 @@ export type RouteErrorProps = {
 export type RotatingSpeedHelperProps = {
   zoom: number;
 };
+
+export interface Inputs {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
