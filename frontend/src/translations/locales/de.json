@@ -20,7 +20,8 @@
     "DESCRIPTION": "Wir senden Ihnen eine E-Mail pro Tag mit den Statistiken der letzten Stunden. Sie können sich jederzeit abmelden. Wir werden Ihre E-Mail-Adresse niemals an Dritte weitergeben.",
     "FIRST_NAME": "Vorname",
     "LAST_NAME": "Nachname",
-    "EMAIL": "E-Mail"
+    "EMAIL": "E-Mail",
+    "INVALID_EMAIL": "Ungültige E-Mail-Adresse"
   },
   "GENERIC": {
     "YES": "Ja",

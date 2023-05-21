@@ -20,7 +20,8 @@
     "DESCRIPTION": "We will send you one email per day with the statistics of the last hours. You can unsubscribe at any time. We will never share your email address with anyone else.",
     "FIRST_NAME": "First name",
     "LAST_NAME": "Last name",
-    "EMAIL": "Email"
+    "EMAIL": "Email",
+    "INVALID_EMAIL": "Invalid email address"
   },
   "GENERIC": {
     "YES": "Yes",
