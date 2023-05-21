@@ -88,8 +88,8 @@ export const Sidebar = ({
         <>
           <div className="flex flex-col w-full h-full overflow-y-scroll">
             <div className="flex flex-col items-start justify-center mb-3">
-              <div className="flex items-center justify-between w-full relative">
-                <h1 className="text-white text-xl font-medium whitespace-pre">
+              <div className="flex items-center w-full relative">
+                <h1 className="text-white text-xl font-medium">
                   {t('HEADER.TITLE')}
                 </h1>
                 <div className="absolute right-0 top-0">
@@ -262,7 +262,7 @@ export const SettingsList = () => {
                   {t('SETTINGS.GLOBE_ROTATION')}
                 </h1>
                 <p className="text-gray-300 text-sm italic">
-                  ({t('SETTINGS.DEFAULT')}: No)
+                  ({t('SETTINGS.DEFAULT')}: {t('GENERIC.NO')})
                 </p>
               </div>
               <div className="flex items-end">
@@ -282,7 +282,7 @@ export const SettingsList = () => {
                   {t('SETTINGS.DOT_PULSING')}
                 </h1>
                 <p className="text-gray-300 text-sm italic">
-                  ({t('SETTINGS.DEFAULT')}: Yes)
+                  ({t('SETTINGS.DEFAULT')}: {t('GENERIC.YES')})
                 </p>
               </div>
               <div className="flex items-end">
@@ -365,6 +365,7 @@ export const LanguageSwitcher = () => {
                 className="w-6 h-6 lg:w-7 lg:h-7 transition-all duration-500 hover:scale-75 cursor-pointer"
                 onClick={() => {
                   i18n.changeLanguage(lang.code);
+                  localStorage.setItem('language', lang.code);
                   setShowMenu(false);
                 }}
               />
