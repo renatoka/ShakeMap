@@ -18,7 +18,6 @@ export const Main = () => {
     (state) => state.settings,
   );
   const [actionModalData, setActionModalData] = useState<RouteErrorProps>();
-
   const [mapRef, setMapRef] = useState<MapRef | null>(null);
   const [userInteracting, setUserInteracting] = useState<boolean>(false);
   const [zoom, setZoom] = useState<number>(1.5);
@@ -171,26 +170,24 @@ export const Main = () => {
             <ErrorPage description={actionModalData?.description!} title={''} />
           ))}
         {earthquakesData && earthquakesData.length > 0 && mapboxToken && (
-          <>
-            <Map
-              {...viewState}
-              projection={projection}
-              optimizeForTerrain={true}
-              onMove={(event) => setViewState(event.viewState)}
-              onZoom={(event) => setZoom(event.viewState.zoom)}
-              style={{ width: '100vw', height: '100vh' }}
-              mapStyle="mapbox://styles/rkauric/clftyk5ry007v01o5hw5kdzpr"
-              mapboxAccessToken={mapboxToken}
-              ref={(map) => setMapRef(map)}
-              reuseMaps={true}
-            >
-              {earthquakesData &&
-                earthquakesData.length > 0 &&
-                earthquakesData.map((earthquake: any) => (
-                  <PulsingDot key={earthquake.id} {...earthquake} />
-                ))}
-            </Map>
-          </>
+          <Map
+            {...viewState}
+            projection={projection}
+            optimizeForTerrain={true}
+            onMove={(event) => setViewState(event.viewState)}
+            onZoom={(event) => setZoom(event.viewState.zoom)}
+            style={{ width: '100vw', height: '100vh' }}
+            mapStyle="mapbox://styles/rkauric/clftyk5ry007v01o5hw5kdzpr"
+            mapboxAccessToken={mapboxToken}
+            ref={(map) => setMapRef(map)}
+            reuseMaps={true}
+          >
+            {earthquakesData &&
+              earthquakesData.length > 0 &&
+              earthquakesData.map((earthquake: any) => (
+                <PulsingDot key={earthquake.id} {...earthquake} />
+              ))}
+          </Map>
         )}
       </div>
       <Sidebar
