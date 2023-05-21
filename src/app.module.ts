@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EarthquakesModule } from './earthquakes/earthquakes.module';
 import { MapboxTokenModule } from './mapbox-token/mapbox-token.module';
+import { UsersModule } from './users/users.module';
 @Module({
   imports: [
     EarthquakesModule,
@@ -13,6 +14,7 @@ import { MapboxTokenModule } from './mapbox-token/mapbox-token.module';
       isGlobal: true,
     }),
     ScheduleModule.forRoot(),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
