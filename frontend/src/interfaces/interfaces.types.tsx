@@ -39,3 +39,17 @@ export interface Inputs {
   lastName: string;
   email: string;
 }
+
+export type ValidateResponse = {
+  success: boolean;
+  errors: {
+    message: string;
+    path: string | number;
+    context: {
+      key: string;
+      label: string;
+      value: string;
+    };
+    type: string;
+  }[];
+};
