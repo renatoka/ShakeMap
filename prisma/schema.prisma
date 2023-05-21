@@ -23,3 +23,11 @@ model Earthquakes {
   unid           String   @unique
   source_id      String
 }
+
+model Users {
+  id                 Int     @id @default(autoincrement())
+  firstName          String
+  lastName           String
+  email              String  @unique
+  activeSubscription Boolean @default(false)
+}
