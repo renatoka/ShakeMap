@@ -15,6 +15,7 @@ import { validate } from '../helpers/functions';
 import { Inputs } from '../interfaces';
 import { useTranslation } from 'react-i18next';
 import CheckIcon from '@mui/icons-material/Check';
+import { createUser } from '../redux/actions/users-actions';
 
 export const PulsingDot = ({
   lon,
@@ -137,6 +138,7 @@ export const SubscribeModal = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
   const [errors, setErrors] = useState<Inputs>({
     firstName: '',
     lastName: '',
@@ -148,21 +150,32 @@ export const SubscribeModal = () => {
     email: '',
   });
 
-  const handleSubmit = async (e: any) => {
-    const isNotEmpty = Object.values(inputs).every((x) => x !== '');
+  useEffect(() => {
+    if (isFirstLoad) {
+      return;
+    }
     for (const [key, value] of Object.entries(inputs)) {
       if (value === '') {
         setErrors((prev) => ({ ...prev, [key]: t('GENERIC.REQUIRED_FIELD') }));
+      } else {
+        setErrors((prev) => ({ ...prev, [key]: '' }));
       }
     }
+  }, [inputs, t, isFirstLoad]);
+
+  const handleSubmit = async () => {
+    setIsFirstLoad(false);
+    const isNotEmpty = Object.values(inputs).every((x) => x !== '');
     if (isNotEmpty) {
-      const isValid = validate(inputs);
-      if (isValid) {
+      const validation = validate(inputs);
+      if (validation.success) {
         setIsSubmitted(true);
-        setErrors({ firstName: '', lastName: '', email: '' });
-        setTimeout(() => {
-          dispatch(setShowSubscribeModalAction(false));
-        }, 2000);
+        setErrors({} as Inputs);
+        await dispatch(createUser(inputs));
+      } else {
+        validation.errors.forEach((err: any) => {
+          setErrors((prev) => ({ ...prev, [err.path]: err.message }));
+        });
       }
     }
   };
@@ -176,7 +189,7 @@ export const SubscribeModal = () => {
       transition={{ duration: 0.2 }}
     >
       <div className="flex flex-col items-center justify-center w-full h-full">
-        <div className="flex flex-col justify-center items-center w-full h-full md:w-[560px] md:h-fit bg-black rounded-lg text-white p-3 gap-3 relative">
+        <div className="flex flex-col justify-center items-center w-full h-full md:w-[550px] md:h-fit bg-black rounded-lg text-white p-4 gap-3 relative">
           <div className="absolute top-0 right-0 m-4">
             <CloseIcon
               className="cursor-pointer"
@@ -224,7 +237,7 @@ export const SubscribeModal = () => {
               <p className="text-red-500 text-xs">{errors.email}</p>
             )}
             <button
-              className="bg-white text-black rounded-md p-2 hover:bg-gray-200 active:bg-gray-300 focus:outline-none"
+              className="bg-orange-500 hover:bg-orange-600 hover:border-orange-600 py-2 px-4 rounded-md focus:outline-none active:bg-orange-700 active:border-orange-700"
               onClick={handleSubmit}
             >
               {isSubmitted ? (
