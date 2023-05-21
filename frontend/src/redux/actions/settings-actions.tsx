@@ -5,7 +5,7 @@ import {
   setRotating,
   setSelectedDate,
   setShowSubscribeModal,
-} from '../reducers/settingsReducer';
+} from '../reducers/settings-reducer';
 import { AppDispatch } from '../store';
 
 export const setRotatingAction =

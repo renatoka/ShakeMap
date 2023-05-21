@@ -6,7 +6,7 @@ import {
   GET_EARTHQUAKES_DIFFERENT_DATE_FAIL,
   GET_EARTHQUAKES_DIFFERENT_DATE_REQUEST,
   GET_EARTHQUAKES_DIFFERENT_DATE_SUCCESS,
-} from '../constants/earthquakesDataConstants';
+} from '../constants/earthquakes-constants';
 
 // extend the Action interface to include a payload property
 declare module 'redux' {

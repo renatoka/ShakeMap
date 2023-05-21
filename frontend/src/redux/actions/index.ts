@@ -1,3 +1,3 @@
-export * from './mapboxTokenActions';
-export * from './earthquakesDataActions';
-export * from './settingsActions';
+export * from './token-actions';
+export * from './earthquakes-actions';
+export * from './settings-actions';

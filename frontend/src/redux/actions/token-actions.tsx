@@ -2,7 +2,7 @@ import {
   MAPBOX_TOKEN_REQUEST,
   MAPBOX_TOKEN_SUCCESS,
   MAPBOX_TOKEN_FAIL,
-} from '../constants/mapboxTokenConstants';
+} from '../constants/token-constants';
 import axios from 'axios';
 
 export const getMapboxToken = () => async (dispatch: any) => {

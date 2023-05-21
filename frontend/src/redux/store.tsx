@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { earthquakesDataReducer } from './reducers/earthquakesDataReducer';
-import { mapboxTokenReducer } from './reducers/mapboxTokenReducer';
-import { settingsReducer } from './reducers/settingsReducer';
+import { earthquakesDataReducer } from './reducers/earthquakes-reducer';
+import { mapboxTokenReducer } from './reducers/token-reducer';
+import { settingsReducer } from './reducers/settings-reducer';
+import { userReducer } from './reducers/users-reducer';
 
 export const store = configureStore({
   reducer: {
     mapboxToken: mapboxTokenReducer,
     earthquakesData: earthquakesDataReducer,
     settings: settingsReducer,
+    users: userReducer,
   },
 });
 

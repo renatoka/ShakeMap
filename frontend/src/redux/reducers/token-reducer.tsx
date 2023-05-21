@@ -3,7 +3,7 @@ import {
   MAPBOX_TOKEN_REQUEST,
   MAPBOX_TOKEN_SUCCESS,
   MAPBOX_TOKEN_FAIL,
-} from '../constants/mapboxTokenConstants';
+} from '../constants/token-constants';
 
 // extend the Action interface to include a payload property
 declare module 'redux' {

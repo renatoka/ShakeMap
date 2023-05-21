@@ -6,7 +6,7 @@ import {
   GET_EARTHQUAKES_FAIL,
   GET_EARTHQUAKES_REQUEST,
   GET_EARTHQUAKES_SUCCESS,
-} from '../constants/earthquakesDataConstants';
+} from '../constants/earthquakes-constants';
 
 export const fetchAndGetEarthquakesByDate =
   ({ limit, end, start }: { end?: string; start?: string; limit?: number }) =>
