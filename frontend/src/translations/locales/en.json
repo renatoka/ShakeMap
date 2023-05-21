@@ -14,5 +14,17 @@
     "TYPES": "Types",
     "REACT_SELECT_SEARCH_PLACEHOLDER": "Search...",
     "SUBSCRIBE": "Subscribe"
+  },
+  "SUBSCRIBE_MODAL": {
+    "TITLE": "Newsletter",
+    "DESCRIPTION": "We will send you one email per day with the statistics of the last hours. You can unsubscribe at any time. We will never share your email address with anyone else.",
+    "FIRST_NAME": "First name",
+    "LAST_NAME": "Last name",
+    "EMAIL": "Email"
+  },
+  "GENERIC": {
+    "YES": "Yes",
+    "NO": "No",
+    "REQUIRED_FIELD": "This field is required"
   }
 }

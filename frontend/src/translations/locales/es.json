@@ -14,5 +14,17 @@
     "TYPES": "Tipos",
     "REACT_SELECT_SEARCH_PLACEHOLDER": "Buscar...",
     "SUBSCRIBE": "Suscribir"
+  },
+  "SUBSCRIBE_MODAL": {
+    "TITLE": "Boletín informativo",
+    "DESCRIPTION": "Te enviaremos un correo electrónico por día con las estadísticas de las últimas horas. Puedes darte de baja en cualquier momento. Nunca compartiremos tu dirección de correo electrónico con nadie más",
+    "FIRST_NAME": "Nombre",
+    "LAST_NAME": "Apellido",
+    "EMAIL": "E-Mail"
+  },
+  "GENERIC": {
+    "YES": "Sí",
+    "NO": "No",
+    "REQUIRED_FIELD": "Este campo es obligatorio"
   }
 }

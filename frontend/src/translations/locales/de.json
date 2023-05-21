@@ -14,5 +14,17 @@
     "TYPES": "Typen",
     "REACT_SELECT_SEARCH_PLACEHOLDER": "Suchen...",
     "SUBSCRIBE": "Abonnieren"
+  },
+  "SUBSCRIBE_MODAL": {
+    "TITLE": "Newsletter",
+    "DESCRIPTION": "Wir senden Ihnen eine E-Mail pro Tag mit den Statistiken der letzten Stunden. Sie können sich jederzeit abmelden. Wir werden Ihre E-Mail-Adresse niemals an Dritte weitergeben.",
+    "FIRST_NAME": "Vorname",
+    "LAST_NAME": "Nachname",
+    "EMAIL": "E-Mail"
+  },
+  "GENERIC": {
+    "YES": "Ja",
+    "NO": "Nein",
+    "REQUIRED_FIELD": "Dieses Feld ist erforderlich"
   }
 }
