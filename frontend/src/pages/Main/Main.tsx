@@ -169,7 +169,7 @@ export const Main = () => {
           (!earthquakesData && (
             <ErrorPage description={actionModalData?.description!} title={''} />
           ))}
-        {earthquakesData && earthquakesData.length > 0 && mapboxToken && (
+        {mapboxToken && (
           <Map
             {...viewState}
             projection={projection}
