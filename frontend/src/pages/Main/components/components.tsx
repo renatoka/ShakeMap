@@ -126,7 +126,7 @@ export const Sidebar = ({
                 />
               </div>
             </div>
-            <div className="overflow-y-scroll" id="scrollbar-hide">
+            <div className="overflow-y-scroll mt-auto" id="scrollbar-hide">
               <EarthquakeList setZoomInCoordinates={setZoomInCoordinates} />
             </div>
             <div className="mt-auto">
@@ -184,7 +184,7 @@ export const EarthquakeList = ({ setZoomInCoordinates }: SidebarProps) => {
           </div>
         ))
       ) : (
-        <div className="flex justify-center items-center h-full w-full">
+        <div className="flex w-full h-full items-center justify-center">
           <CircularProgress size={80} color="warning" />
         </div>
       ),
