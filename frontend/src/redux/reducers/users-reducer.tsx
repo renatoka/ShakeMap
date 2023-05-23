@@ -29,6 +29,7 @@ const userSlice = createSlice({
     builder.addCase(CREATE_USER_SUCCESS, (state, action) => {
       state.loading = false;
       state.user = action.payload;
+      state.error = null;
     });
     builder.addCase(CREATE_USER_FAIL, (state, action) => {
       state.loading = false;

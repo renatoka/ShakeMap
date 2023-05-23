@@ -15,10 +15,10 @@ export const createUser =
         type: CREATE_USER_SUCCESS,
         payload: data,
       });
-    } catch (error) {
+    } catch (error: any) {
       dispatch({
         type: CREATE_USER_FAIL,
-        payload: error,
+        payload: error.response.data.message,
       });
     }
   };

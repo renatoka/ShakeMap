@@ -139,6 +139,7 @@ export const SubscribeModal = () => {
   const { t } = useTranslation();
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
+  const { error, user } = useAppSelector((state) => state.users);
   const [errors, setErrors] = useState<Inputs>({
     firstName: '',
     lastName: '',
@@ -179,6 +180,14 @@ export const SubscribeModal = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (!error && isSubmitted && user) {
+      setTimeout(() => {
+        dispatch(setShowSubscribeModalAction(false));
+      }, 2000);
+    }
+  }, [user, error, dispatch]);
 
   return (
     <motion.div
@@ -240,12 +249,9 @@ export const SubscribeModal = () => {
               className="bg-orange-500 hover:bg-orange-600 hover:border-orange-600 py-2 px-4 rounded-md focus:outline-none active:bg-orange-700 active:border-orange-700"
               onClick={handleSubmit}
             >
-              {isSubmitted ? (
-                <CheckIcon color="success" />
-              ) : (
-                t('SETTINGS.SUBSCRIBE')
-              )}
+              {isSubmitted && !error ? <CheckIcon /> : t('SETTINGS.SUBSCRIBE')}
             </button>
+            {error && <p className="text-red-500 text-xs">{error}</p>}
           </div>
         </div>
       </div>
