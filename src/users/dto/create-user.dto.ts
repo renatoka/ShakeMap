@@ -8,7 +8,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   lastName: string;
 
-  @IsEmail()
+  @IsEmail({ require_tld: false })
   @IsNotEmpty()
   email: string;
 }
