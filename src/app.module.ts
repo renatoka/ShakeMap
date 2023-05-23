@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { EarthquakesModule } from './earthquakes/earthquakes.module';
 import { MapboxTokenModule } from './mapbox-token/mapbox-token.module';
 import { UsersModule } from './users/users.module';
+import { MailerService } from './mailer/mailer.service';
 @Module({
   imports: [
     EarthquakesModule,
@@ -17,6 +18,6 @@ import { UsersModule } from './users/users.module';
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, MailerService],
 })
 export class AppModule {}
