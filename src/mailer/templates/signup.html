@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div class="w-screen h-full flex flex-col justify-center items-center">
+      <div class="md:w-[40%] h-full bg-[#bee1b5] p-3">
+        <div class="w-full flex justify-center">
+          <img
+            alt="Hero Image"
+            src="https://i.ibb.co/kSrmd0w/hero-image.png"
+            style="
+              display: block;
+              height: auto;
+              border: 0;
+              width: 350px;
+              max-width: 100%;
+            "
+            title="Hero Image"
+          />
+        </div>
+        <div
+          class="flex flex-col gap-1 text-center mt-5 p-5 bg-[#fef2dd] w-full h-full"
+        >
+          <h1 class="text-[#4e968d] text-4xl font-bold">
+            We have a new member! How exciting!
+          </h1>
+          <div
+            class="text-[#373449] text-base md:text-lg font-normal flex flex-col gap-1 mt-3"
+          >
+            <p>Dear {{params.firstName}},</p>
+            <p>
+              Thank you for signing up for our newsletter! We are excited to
+              have you as a new member of our community.
+            </p>
+            <p>
+              As promised, we will be sending you regular updates on the latest
+              seismic activities around the world. Stay tuned!
+            </p>
+          </div>
+        </div>
+        <div
+          class="p-5 bg-[#74c1b9] w-full h-full mt-10 flex flex-col md:flex-row gap-5"
+        >
+          <div class="flex flex-col gap-2 justify-center">
+            <h1 class="w-full text-start text-[#fef2dd] text-4xl font-bold">
+              And don't forget...
+            </h1>
+            <p class="w-full text-start text-white text-lg font-normal">
+              You can unsubscribe at any time by clicking the button bellow this
+              paragraph.
+            </p>
+            <button
+              class="text-[#74c1b9] bg-[#fef2dd] rounded-3xl font-bold p-3 text-base"
+            >
+              Unsubscribe
+            </button>
+          </div>
+          <img
+            src="https://i.ibb.co/fr8y27P/update.png"
+            class="w-full md:w-1/2"
+          />
+        </div>
+      </div>
+      <div class="w-full md:w-[40%] h-12 bg-[#373449]"></div>
+    </div>
+  </body>
+</html>

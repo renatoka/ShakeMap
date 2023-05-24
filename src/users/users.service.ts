@@ -26,7 +26,7 @@ export class UsersService {
           firstName: createUserDto.firstName,
         },
       };
-      await this.mailer.sendMail(mailData, 'hello-world');
+      await this.mailer.sendMail(mailData, 'signup');
       return true;
     } catch (error) {
       if (error.code === 'P2002') {
