@@ -28,6 +28,7 @@ export const Sidebar = ({
   const { t } = useTranslation();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const { limit, selectedDate } = useAppSelector((state) => state.settings);
+  const { earthquakesData } = useAppSelector((state) => state.earthquakesData);
   const [locale, setLocale] = useState<string>();
 
   useEffect(() => {
@@ -126,7 +127,15 @@ export const Sidebar = ({
                 />
               </div>
             </div>
-            <div className="overflow-y-scroll mt-auto" id="scrollbar-hide">
+            <div
+              className="overflow-y-scroll"
+              id="scrollbar-hide"
+              style={
+                earthquakesData && earthquakesData.length > 0
+                  ? { marginTop: '0' }
+                  : { marginTop: 'auto' }
+              }
+            >
               <EarthquakeList setZoomInCoordinates={setZoomInCoordinates} />
             </div>
             <div className="mt-auto">
@@ -184,7 +193,7 @@ export const EarthquakeList = ({ setZoomInCoordinates }: SidebarProps) => {
           </div>
         ))
       ) : (
-        <div className="flex w-full h-full items-center justify-center">
+        <div className="text-center">
           <CircularProgress size={80} color="warning" />
         </div>
       ),
