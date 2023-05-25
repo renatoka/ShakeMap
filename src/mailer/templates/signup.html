@@ -1,71 +1,995 @@
 <!DOCTYPE html>
-<html>
+
+<html
+  lang="en"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:v="urn:schemas-microsoft-com:vml"
+>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title></title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <!--[if mso
+      ]><xml
+        ><o:OfficeDocumentSettings
+          ><o:PixelsPerInch>96</o:PixelsPerInch
+          ><o:AllowPNG /></o:OfficeDocumentSettings></xml
+    ><![endif]-->
+    <!--[if !mso]><!-->
+    <link
+      href="https://fonts.googleapis.com/css?family=Noto+Sans"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!--<![endif]-->
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      a[x-apple-data-detectors] {
+        color: inherit !important;
+        text-decoration: inherit !important;
+      }
+
+      #MessageViewBody a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      p {
+        line-height: inherit;
+      }
+
+      .desktop_hide,
+      .desktop_hide table {
+        display: none;
+        max-height: 0px;
+        overflow: hidden;
+      }
+
+      .image_block img + div {
+        display: none;
+      }
+
+      @media (max-width: 720px) {
+        .desktop_hide table.icons-inner,
+        .row-4 .column-2 .block-1.image_block img {
+          display: inline-block !important;
+        }
+
+        .icons-inner {
+          text-align: center;
+        }
+
+        .icons-inner td {
+          margin: 0 auto;
+        }
+
+        .fullMobileWidth,
+        .row-content {
+          width: 100% !important;
+        }
+
+        .mobile_hide {
+          display: none;
+        }
+
+        .stack .column {
+          width: 100%;
+          display: block;
+        }
+
+        .mobile_hide {
+          min-height: 0;
+          max-height: 0;
+          max-width: 0;
+          overflow: hidden;
+          font-size: 0px;
+        }
+
+        .desktop_hide,
+        .desktop_hide table {
+          display: table !important;
+          max-height: none !important;
+        }
+
+        .row-2 .column-1 .block-5.paragraph_block td.pad > div,
+        .row-4 .column-1 .block-2.paragraph_block td.pad > div {
+          text-align: left !important;
+        }
+
+        .row-2 .column-1 .block-5.paragraph_block td.pad {
+          padding: 0 25px !important;
+        }
+
+        .row-2 .column-1 .block-4.heading_block h1 {
+          text-align: center !important;
+          font-size: 29px !important;
+        }
+
+        .row-2 .column-1 .block-4.heading_block td.pad {
+          padding: 10px !important;
+        }
+
+        .row-4 .column-2 .block-1.image_block .alignment {
+          text-align: center !important;
+        }
+
+        .row-3 .column-1 .block-1.spacer_block {
+          height: 10px !important;
+        }
+
+        .row-4 .column-1 .block-1.heading_block td.pad {
+          padding: 15px 25px 10px !important;
+        }
+
+        .row-4 .column-1 .block-1.heading_block h1 {
+          font-size: 35px !important;
+        }
+
+        .row-2 .column-1 .block-2.image_block td.pad {
+          padding: 20px 20px 0 !important;
+        }
+
+        .row-4 .column-1 .block-2.paragraph_block td.pad {
+          padding: 0 25px 10px !important;
+        }
+
+        .row-4 .column-1 .block-3.button_block td.pad {
+          padding: 10px 25px !important;
+        }
+
+        .row-4 .column-1 .block-3.button_block a span,
+        .row-4 .column-1 .block-3.button_block div,
+        .row-4 .column-1 .block-3.button_block div span {
+          line-height: 2 !important;
+        }
+
+        .row-4 .column-2 .block-1.image_block td.pad {
+          padding: 20px 15px 0 !important;
+        }
+
+        .row-3 .column-1,
+        .row-4 .column-2 {
+          padding: 0 !important;
+        }
+
+        .row-4 .column-1 {
+          padding: 5px 0 0 !important;
+        }
+      }
+    </style>
   </head>
-  <body>
-    <div class="w-screen h-full flex flex-col justify-center items-center">
-      <div class="md:w-[40%] h-full bg-[#bee1b5] p-3">
-        <div class="w-full flex justify-center">
-          <img
-            alt="Hero Image"
-            src="https://i.ibb.co/kSrmd0w/hero-image.png"
-            style="
-              display: block;
-              height: auto;
-              border: 0;
-              width: 350px;
-              max-width: 100%;
-            "
-            title="Hero Image"
-          />
-        </div>
-        <div
-          class="flex flex-col gap-1 text-center mt-5 p-5 bg-[#fef2dd] w-full h-full"
-        >
-          <h1 class="text-[#4e968d] text-4xl font-bold">
-            We have a new member! How exciting!
-          </h1>
-          <div
-            class="text-[#373449] text-base md:text-lg font-normal flex flex-col gap-1 mt-3"
-          >
-            <p>Dear {{params.firstName}},</p>
-            <p>
-              Thank you for signing up for our newsletter! We are excited to
-              have you as a new member of our community.
-            </p>
-            <p>
-              As promised, we will be sending you regular updates on the latest
-              seismic activities around the world. Stay tuned!
-            </p>
-          </div>
-        </div>
-        <div
-          class="p-5 bg-[#74c1b9] w-full h-full mt-10 flex flex-col md:flex-row gap-5"
-        >
-          <div class="flex flex-col gap-2 justify-center">
-            <h1 class="w-full text-start text-[#fef2dd] text-4xl font-bold">
-              And don't forget...
-            </h1>
-            <p class="w-full text-start text-white text-lg font-normal">
-              You can unsubscribe at any time by clicking the button bellow this
-              paragraph.
-            </p>
-            <button
-              class="text-[#74c1b9] bg-[#fef2dd] rounded-3xl font-bold p-3 text-base"
+  <body
+    style="
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      -webkit-text-size-adjust: none;
+      text-size-adjust: none;
+    "
+  >
+    <table
+      border="0"
+      cellpadding="0"
+      cellspacing="0"
+      class="nl-container"
+      role="presentation"
+      style="background-color: #ffffff"
+      width="100%"
+    >
+      <tbody>
+        <tr>
+          <td>
+            <table
+              align="center"
+              border="0"
+              cellpadding="0"
+              cellspacing="0"
+              class="row row-1"
+              role="presentation"
+              width="100%"
             >
-              Unsubscribe
-            </button>
-          </div>
-          <img
-            src="https://i.ibb.co/fr8y27P/update.png"
-            class="w-full md:w-1/2"
-          />
-        </div>
-      </div>
-      <div class="w-full md:w-[40%] h-12 bg-[#373449]"></div>
-    </div>
+              <tbody>
+                <tr>
+                  <td>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      class="row-content stack"
+                      role="presentation"
+                      style="
+                        background-color: #bee1b5;
+                        border-radius: 0;
+                        color: #000000;
+                        width: 700px;
+                      "
+                      width="700"
+                    >
+                      <tbody>
+                        <tr>
+                          <td
+                            class="column column-1"
+                            style="
+                              font-weight: 400;
+                              text-align: left;
+                              vertical-align: top;
+                              border-top: 0px;
+                              border-right: 0px;
+                              border-bottom: 0px;
+                              border-left: 0px;
+                            "
+                            width="100%"
+                          >
+                            <div
+                              class="spacer_block block-1"
+                              style="
+                                height: 30px;
+                                line-height: 30px;
+                                font-size: 1px;
+                              "
+                            >
+                               
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table
+              align="center"
+              border="0"
+              cellpadding="0"
+              cellspacing="0"
+              class="row row-2"
+              role="presentation"
+              width="100%"
+            >
+              <tbody>
+                <tr>
+                  <td>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      class="row-content stack"
+                      role="presentation"
+                      style="
+                        background-color: #bee1b5;
+                        border-radius: 0;
+                        color: #000000;
+                        width: 700px;
+                      "
+                      width="700"
+                    >
+                      <tbody>
+                        <tr>
+                          <td
+                            class="column column-1"
+                            style="
+                              font-weight: 400;
+                              text-align: left;
+                              vertical-align: top;
+                              border-top: 0px;
+                              border-right: 0px;
+                              border-bottom: 0px;
+                              border-left: 0px;
+                            "
+                            width="100%"
+                          >
+                            <div
+                              class="spacer_block block-1 mobile_hide"
+                              style="
+                                height: 40px;
+                                line-height: 40px;
+                                font-size: 1px;
+                              "
+                            ></div>
+                            <table
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              class="image_block block-2"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tr>
+                                <td
+                                  class="pad"
+                                  style="
+                                    width: 100%;
+                                    padding-right: 0px;
+                                    padding-left: 0px;
+                                  "
+                                >
+                                  <div
+                                    align="center"
+                                    class="alignment"
+                                    style="line-height: 10px"
+                                  >
+                                    <img
+                                      alt="Hero Image"
+                                      class="fullMobileWidth"
+                                      src="https://i.ibb.co/FXqncWr/hero-image.png"
+                                      style="
+                                        display: block;
+                                        height: auto;
+                                        border: 0;
+                                        width: 280px;
+                                        max-width: 100%;
+                                      "
+                                      title="Hero Image"
+                                      width="280"
+                                    />
+                                  </div>
+                                </td>
+                              </tr>
+                            </table>
+                            <div
+                              class="spacer_block block-3 mobile_hide"
+                              style="
+                                height: 10px;
+                                line-height: 10px;
+                                font-size: 1px;
+                              "
+                            >
+                               
+                            </div>
+                            <table
+                              border="0"
+                              cellpadding="10"
+                              cellspacing="0"
+                              class="heading_block block-4"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tr>
+                                <td class="pad">
+                                  <h1
+                                    style="
+                                      margin: 0;
+                                      color: #4e968d;
+                                      direction: ltr;
+                                      font-family: 'Open Sans', 'Helvetica Neue',
+                                        Helvetica, Arial, sans-serif;
+                                      font-size: 40px;
+                                      font-weight: 700;
+                                      letter-spacing: normal;
+                                      line-height: 120%;
+                                      text-align: center;
+                                      margin-top: 0;
+                                      margin-bottom: 0;
+                                    "
+                                  >
+                                    <span class="tinyMce-placeholder"
+                                      >Welcome {{params.firstName}}!</span
+                                    >
+                                  </h1>
+                                </td>
+                              </tr>
+                            </table>
+                            <table
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              class="paragraph_block block-5"
+                              role="presentation"
+                              style="word-break: break-word"
+                              width="100%"
+                            >
+                              <tr>
+                                <td
+                                  class="pad"
+                                  style="
+                                    padding-left: 50px;
+                                    padding-right: 50px;
+                                  "
+                                >
+                                  <div
+                                    style="
+                                      color: #373449;
+                                      direction: ltr;
+                                      font-family: 'Nunito', Arial,
+                                        'Helvetica Neue', Helvetica, sans-serif;
+                                      font-size: 18px;
+                                      font-weight: 400;
+                                      letter-spacing: 0px;
+                                      line-height: 150%;
+                                      text-align: center;
+                                    "
+                                  >
+                                    <p data-pm-slice="1 1 []" style="margin: 0">
+                                      Thank you for subscribing to our daily
+                                      earthquake statistics. We sincerely
+                                      appreciate your trust in us as your
+                                      reliable source of information. Each day,
+                                      we will send you an email with
+                                      comprehensive statistics summarizing the
+                                      seismic activity that occurred in your
+                                      region. These statistics include details
+                                      such as earthquake magnitudes, locations,
+                                      and any significant developments to keep
+                                      you informed.
+                                    </p>
+                                  </div>
+                                </td>
+                              </tr>
+                            </table>
+                            <div
+                              class="spacer_block block-6"
+                              style="
+                                height: 20px;
+                                line-height: 20px;
+                                font-size: 1px;
+                              "
+                            >
+                               
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table
+              align="center"
+              border="0"
+              cellpadding="0"
+              cellspacing="0"
+              class="row row-3"
+              role="presentation"
+              width="100%"
+            >
+              <tbody>
+                <tr>
+                  <td>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      class="row-content stack"
+                      role="presentation"
+                      style="
+                        background-color: #bee1b5;
+                        border-left: 16px solid #bee1b5;
+                        border-radius: 0;
+                        border-right: 16px solid #bee1b5;
+                        border-top: 30px solid #bee1b5;
+                        color: #000000;
+                        width: 700px;
+                      "
+                      width="700"
+                    >
+                      <tbody>
+                        <tr>
+                          <td
+                            class="column column-1"
+                            style="
+                              font-weight: 400;
+                              text-align: left;
+                              padding-bottom: 5px;
+                              padding-top: 5px;
+                              vertical-align: top;
+                              border-top: 0px;
+                              border-right: 0px;
+                              border-bottom: 0px;
+                              border-left: 0px;
+                            "
+                            width="100%"
+                          >
+                            <div
+                              class="spacer_block block-1"
+                              style="
+                                height: 20px;
+                                line-height: 20px;
+                                font-size: 1px;
+                              "
+                            >
+                               
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table
+              align="center"
+              border="0"
+              cellpadding="0"
+              cellspacing="0"
+              class="row row-4"
+              role="presentation"
+              width="100%"
+            >
+              <tbody>
+                <tr>
+                  <td>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      class="row-content stack"
+                      role="presentation"
+                      style="
+                        background-color: #74c1b9;
+                        border-left: 16px solid #bee1b5;
+                        border-radius: 0;
+                        border-right: 16px solid #bee1b5;
+                        color: #000000;
+                        width: 700px;
+                      "
+                      width="700"
+                    >
+                      <tbody>
+                        <tr>
+                          <td
+                            class="column column-1"
+                            style="
+                              font-weight: 400;
+                              text-align: left;
+                              padding-bottom: 15px;
+                              padding-top: 15px;
+                              vertical-align: bottom;
+                              border-top: 0px;
+                              border-right: 0px;
+                              border-bottom: 0px;
+                              border-left: 0px;
+                            "
+                            width="50%"
+                          >
+                            <table
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              class="heading_block block-1"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tr>
+                                <td
+                                  class="pad"
+                                  style="
+                                    padding-bottom: 10px;
+                                    padding-left: 30px;
+                                    padding-right: 20px;
+                                    padding-top: 10px;
+                                    text-align: center;
+                                    width: 100%;
+                                  "
+                                >
+                                  <h1
+                                    style="
+                                      margin: 0;
+                                      color: #fef2dd;
+                                      direction: ltr;
+                                      font-family: 'Open Sans', 'Helvetica Neue',
+                                        Helvetica, Arial, sans-serif;
+                                      font-size: 30px;
+                                      font-weight: 700;
+                                      letter-spacing: normal;
+                                      line-height: 120%;
+                                      text-align: left;
+                                      margin-top: 0;
+                                      margin-bottom: 0;
+                                    "
+                                  >
+                                    <span class="tinyMce-placeholder"
+                                      >And remember...</span
+                                    >
+                                  </h1>
+                                </td>
+                              </tr>
+                            </table>
+                            <table
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              class="paragraph_block block-2"
+                              role="presentation"
+                              style="word-break: break-word"
+                              width="100%"
+                            >
+                              <tr>
+                                <td
+                                  class="pad"
+                                  style="
+                                    padding-bottom: 10px;
+                                    padding-left: 30px;
+                                    padding-right: 20px;
+                                  "
+                                >
+                                  <div
+                                    style="
+                                      color: #ffffff;
+                                      direction: ltr;
+                                      font-family: 'Nunito', Arial,
+                                        'Helvetica Neue', Helvetica, sans-serif;
+                                      font-size: 18px;
+                                      font-weight: 400;
+                                      letter-spacing: 0px;
+                                      line-height: 150%;
+                                      text-align: left;
+                                    "
+                                  >
+                                    <p style="margin: 0">
+                                      We understand that everyone's inbox can
+                                      quickly become overwhelmed. Therefore, we
+                                      want to assure you that unsubscribing is
+                                      always an option, should you ever feel the
+                                      need to adjust your preferences or if
+                                      circumstances change. You can easily
+                                      unsubscribe by clicking on the
+                                      "unsubscribe" link provided at the bottom
+                                      of our emails.
+                                    </p>
+                                  </div>
+                                </td>
+                              </tr>
+                            </table>
+                            <table
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              class="button_block block-3"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tr>
+                                <td
+                                  class="pad"
+                                  style="
+                                    padding-bottom: 10px;
+                                    padding-left: 30px;
+                                    padding-right: 20px;
+                                    padding-top: 10px;
+                                    text-align: left;
+                                  "
+                                >
+                                  <div align="left" class="alignment">
+                                    <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.example.com" style="height:42px;width:177px;v-text-anchor:middle;" arcsize="72%" stroke="false" fillcolor="#fef2dd"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#74c1b9; font-family:Arial, sans-serif; font-size:16px"><!
+                                    [endif]--><a
+                                      href="www.example.com"
+                                      style="
+                                        text-decoration: none;
+                                        display: inline-block;
+                                        color: #74c1b9;
+                                        background-color: #fef2dd;
+                                        border-radius: 30px;
+                                        width: auto;
+                                        border-top: 0px solid #fef2dd;
+                                        font-weight: 700;
+                                        border-right: 0px solid #fef2dd;
+                                        border-bottom: 0px solid #fef2dd;
+                                        border-left: 0px solid #fef2dd;
+                                        padding-top: 5px;
+                                        padding-bottom: 5px;
+                                        font-family: 'Nunito', Arial,
+                                          'Helvetica Neue', Helvetica,
+                                          sans-serif;
+                                        font-size: 16px;
+                                        text-align: center;
+                                        word-break: keep-all;
+                                      "
+                                      target="_blank"
+                                      ><span
+                                        style="
+                                          padding-left: 30px;
+                                          padding-right: 30px;
+                                          font-size: 16px;
+                                          display: inline-block;
+                                          letter-spacing: normal;
+                                        "
+                                        >UNSUBSCRIBE</span
+                                      ></a
+                                    >
+                                  </div>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                          <td
+                            class="column column-2"
+                            style="
+                              font-weight: 400;
+                              text-align: left;
+                              padding-top: 5px;
+                              vertical-align: bottom;
+                              border-top: 0px;
+                              border-right: 0px;
+                              border-bottom: 0px;
+                              border-left: 0px;
+                            "
+                            width="50%"
+                          >
+                            <table
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              class="image_block block-1"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tr>
+                                <td
+                                  class="pad"
+                                  style="
+                                    padding-left: 10px;
+                                    padding-right: 10px;
+                                    width: 100%;
+                                  "
+                                >
+                                  <div
+                                    align="right"
+                                    class="alignment"
+                                    style="line-height: 10px"
+                                  >
+                                    <img
+                                      alt="Updates Placeholder Image"
+                                      src="https://i.ibb.co/DYdWVjy/update.png"
+                                      style="
+                                        display: block;
+                                        height: auto;
+                                        border: 0;
+                                        width: 314px;
+                                        max-width: 100%;
+                                      "
+                                      title="Updates Placeholder Image"
+                                      width="314"
+                                    />
+                                  </div>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table
+              align="center"
+              border="0"
+              cellpadding="0"
+              cellspacing="0"
+              class="row row-5"
+              role="presentation"
+              width="100%"
+            >
+              <tbody>
+                <tr>
+                  <td>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      class="row-content stack"
+                      role="presentation"
+                      style="
+                        background-color: #bee1b5;
+                        border-radius: 0;
+                        color: #000000;
+                        width: 700px;
+                      "
+                      width="700"
+                    >
+                      <tbody>
+                        <tr>
+                          <td
+                            class="column column-1"
+                            style="
+                              font-weight: 400;
+                              text-align: left;
+                              padding-bottom: 5px;
+                              padding-top: 5px;
+                              vertical-align: top;
+                              border-top: 0px;
+                              border-right: 0px;
+                              border-bottom: 0px;
+                              border-left: 0px;
+                            "
+                            width="100%"
+                          >
+                            <div
+                              class="spacer_block block-1"
+                              style="
+                                height: 40px;
+                                line-height: 40px;
+                                font-size: 1px;
+                              "
+                            >
+                               
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table
+              align="center"
+              border="0"
+              cellpadding="0"
+              cellspacing="0"
+              class="row row-6"
+              role="presentation"
+              width="100%"
+            >
+              <tbody>
+                <tr>
+                  <td>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      class="row-content stack"
+                      role="presentation"
+                      style="color: #000000; width: 700px"
+                      width="700"
+                    >
+                      <tbody>
+                        <tr>
+                          <td
+                            class="column column-1"
+                            style="
+                              font-weight: 400;
+                              text-align: left;
+                              padding-bottom: 5px;
+                              padding-top: 5px;
+                              vertical-align: top;
+                              border-top: 0px;
+                              border-right: 0px;
+                              border-bottom: 0px;
+                              border-left: 0px;
+                            "
+                            width="100%"
+                          >
+                            <table
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              class="icons_block block-1"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tr>
+                                <td
+                                  class="pad"
+                                  style="
+                                    vertical-align: middle;
+                                    color: #9d9d9d;
+                                    font-family: inherit;
+                                    font-size: 15px;
+                                    padding-bottom: 5px;
+                                    padding-top: 5px;
+                                    text-align: center;
+                                  "
+                                >
+                                  <table
+                                    cellpadding="0"
+                                    cellspacing="0"
+                                    role="presentation"
+                                    width="100%"
+                                  >
+                                    <tr>
+                                      <td
+                                        class="alignment"
+                                        style="
+                                          vertical-align: middle;
+                                          text-align: center;
+                                        "
+                                      >
+                                        <!--[if vml]><table align="left" cellpadding="0" cellspacing="0" role="presentation" style="display:inline-block;padding-left:0px;padding-right:0px;"><![endif]-->
+                                        <!--[if !vml]><!-->
+                                        <table
+                                          cellpadding="0"
+                                          cellspacing="0"
+                                          class="icons-inner"
+                                          role="presentation"
+                                          style="
+                                            display: inline-block;
+                                            margin-right: -4px;
+                                            padding-left: 0px;
+                                            padding-right: 0px;
+                                          "
+                                        >
+                                          <!--<![endif]-->
+                                          <tr>
+                                            <td
+                                              style="
+                                                vertical-align: middle;
+                                                text-align: center;
+                                                padding-top: 5px;
+                                                padding-bottom: 5px;
+                                                padding-left: 5px;
+                                                padding-right: 6px;
+                                              "
+                                            >
+                                              <a
+                                                href="https://www.designedwithbee.com/"
+                                                style="text-decoration: none"
+                                                target="_blank"
+                                                ><img
+                                                  align="center"
+                                                  alt="Designed with BEE"
+                                                  class="icon"
+                                                  height="32"
+                                                  src="https://i.ibb.co/PwP83bg/bee.png"
+                                                  style="
+                                                    display: block;
+                                                    height: auto;
+                                                    margin: 0 auto;
+                                                    border: 0;
+                                                  "
+                                                  width="34"
+                                              /></a>
+                                            </td>
+                                            <td
+                                              style="
+                                                font-family: Open Sans,
+                                                  Helvetica Neue, Helvetica,
+                                                  Arial, sans-serif;
+                                                font-size: 15px;
+                                                color: #9d9d9d;
+                                                vertical-align: middle;
+                                                letter-spacing: undefined;
+                                                text-align: center;
+                                              "
+                                            >
+                                              <a
+                                                href="https://www.designedwithbee.com/"
+                                                style="
+                                                  color: #9d9d9d;
+                                                  text-decoration: none;
+                                                "
+                                                target="_blank"
+                                                >Designed with BEE</a
+                                              >
+                                            </td>
+                                          </tr>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- End -->
   </body>
 </html>
