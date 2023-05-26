@@ -2,14 +2,18 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { MailerService } from 'src/mailer/mailer.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService, private mailer: MailerService) {}
+  constructor(
+    private prisma: PrismaService,
+    private mailer: MailerService,
+    private config: ConfigService,
+  ) {}
   async create(createUserDto: CreateUserDto) {
     try {
       const receivers = { email: createUserDto.email };
-
       const user = await this.prisma.users.create({
         data: {
           firstName: createUserDto.firstName,
@@ -19,11 +23,11 @@ export class UsersService {
         },
       });
       const mailData = {
-        sender: { email: 'shakemap.service@gmail.com' },
+        sender: { email: this.config.get<string>('EMAIL_SENDER') },
         receivers: [receivers],
-        subject: 'Welcome to Shakemap!',
+        subject: 'Thank you for signing up!',
         params: {
-          firstName: createUserDto.firstName,
+          firstName: user.firstName,
         },
       };
       await this.mailer.sendMail(mailData, 'signup');
@@ -34,6 +38,15 @@ export class UsersService {
       }
       return error;
     }
+  }
+
+  async findSubscribedUsers() {
+    const subscribers = await this.prisma.users.findMany({
+      where: {
+        activeSubscription: true,
+      },
+    });
+    return subscribers;
   }
 
   // update(id: number, updateUserDto: UpdateUserDto) {
