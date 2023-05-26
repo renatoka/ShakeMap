@@ -321,7 +321,7 @@
                                     "
                                   >
                                     <span class="tinyMce-placeholder"
-                                      >Hello {{params.FirstName}}!</span
+                                      >Hello {{params.firstName}}!</span
                                     >
                                   </h1>
                                 </td>
@@ -596,7 +596,7 @@
                                     "
                                   >
                                     <span class="tinyMce-placeholder"
-                                      >So what's going on?</span
+                                      >Lets hear the numbers</span
                                     >
                                   </h1>
                                 </td>
@@ -632,8 +632,29 @@
                                       text-align: left;
                                     "
                                   >
-                                    <p data-pm-slice="1 1 []" style="margin: 0">
+                                    <!-- <p data-pm-slice="1 1 []" style="margin: 0">
                                       {{params.statistics}}
+                                    </p> -->
+                                    <p data-pm-slice="1 1 []" style="margin: 0">
+                                      Yesterday, we had a total of
+                                      <span style="font-weight: bold"
+                                        >{{params.count}}</span
+                                      >
+                                      earthquakes with the mean magnitude of
+                                      {{params.meanMagnitude}}. The largest
+                                      earthquake was
+                                      <span style="font-weight: bold"
+                                        >{{params.strongestMag}}</span
+                                      >
+                                      in richter scale, which occured in
+                                      {{params.flynn_region}} at a depth of
+                                      <span style="font-weight: bold"
+                                        >{{params.strongestDepth}}</span
+                                      >
+                                      km. Place with the most seismic activity
+                                      was {{params.mostActive.flynn_region}}
+                                      with {{params.mostActive.count}}
+                                      earthquakes total.
                                     </p>
                                   </div>
                                 </td>
