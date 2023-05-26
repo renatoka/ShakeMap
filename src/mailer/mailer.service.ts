@@ -30,7 +30,7 @@ export class MailerService {
         params: params,
       });
 
-      console.log(`Email sent to ${receivers.email}`);
+      console.log(`Email sent to ${receivers[0].email}`);
     } catch (error) {
       console.log(error);
       throw error;
