@@ -1,11 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { EarthquakesService } from 'src/earthquakes/earthquakes.service';
-
+import { MailerService } from 'src/mailer/mailer.service';
+import { UsersService } from 'src/users/users.service';
 @Injectable()
 export class CronService {
-  private readonly logger = new Logger(CronService.name);
-  constructor(private readonly earthquakesService: EarthquakesService) {}
+  private logger = new Logger(CronService.name);
+  constructor(
+    private earthquakesService: EarthquakesService,
+    private users: UsersService,
+    private mailer: MailerService,
+    private config: ConfigService,
+  ) {}
 
   @Cron(CronExpression.EVERY_5_MINUTES)
   async checkForEarthquakes() {
@@ -42,6 +49,33 @@ export class CronService {
       );
     } catch (error) {
       Logger.error(error, 'CRON');
+    }
+  }
+
+  @Cron(CronExpression.EVERY_HOUR)
+  async sendDailyNewsletter() {
+    const subscribers = await this.users.findSubscribedUsers();
+    if (subscribers) {
+      const { earthquakes, count, strongest } =
+        await this.earthquakesService.findForNewsletter();
+      subscribers.forEach(async (subscriber) => {
+        const receivers = { email: subscriber.email };
+        const mailData = {
+          sender: { email: this.config.get<string>('EMAIL_SENDER') },
+          receivers: [receivers],
+          subject: 'Daily Earthquake Report is here!',
+          params: {
+            firstName: subscriber.firstName,
+            count: count,
+            strongestMag: strongest.mag.toFixed(1),
+            flynn_region: strongest.flynn_region,
+            strongestDepth: strongest.depth.toFixed(1),
+          },
+        };
+        await this.mailer.sendMail(mailData, 'newsletter');
+      });
+    } else {
+      console.log('No subscribers to send email to.');
     }
   }
 }
