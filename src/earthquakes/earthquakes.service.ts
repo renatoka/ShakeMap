@@ -13,6 +13,65 @@ export class EarthquakesService {
     private prisma: PrismaService,
   ) {}
 
+  async create(createEarthquakeDTO: CreateEarthquakesDto) {
+    const { earthquakes } = createEarthquakeDTO;
+    try {
+      for (const earthquake of earthquakes) {
+        const unid = earthquake.properties['unid'];
+        const earthquakeExists = await this.prisma.earthquakes.findUnique({
+          where: {
+            unid,
+          },
+        });
+
+        if (!earthquakeExists) {
+          await this.prisma.earthquakes.create({
+            data: {
+              auth: earthquake.properties['auth'],
+              depth: earthquake.properties['depth'],
+              evtype: earthquake.properties['evtype'],
+              flynn_region: earthquake.properties['flynn_region'],
+              lastupdate: earthquake.properties['lastupdate'],
+              lat: earthquake.properties['lat'],
+              lon: earthquake.properties['lon'],
+              mag: earthquake.properties['mag'],
+              magtype: earthquake.properties['magtype'],
+              source_catalog: earthquake.properties['source_catalog'],
+              source_id: earthquake.properties['source_id'],
+              unid,
+              time: earthquake.properties['time'],
+            },
+          });
+        }
+      }
+      return earthquakes;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async delete() {
+    try {
+      const count = await this.prisma.earthquakes.count({
+        where: {
+          time: {
+            lte: new Date(new Date().setDate(new Date().getDate() - 1)),
+          },
+        },
+      });
+      await this.prisma.earthquakes.deleteMany({
+        where: {
+          time: {
+            lte: new Date(new Date().setDate(new Date().getDate() - 1)),
+          },
+        },
+      });
+      return { success: true, count };
+    } catch (error) {
+      return { success: false, error };
+    }
+  }
+
   async fetchEarthquakes(
     getEarthquakesDTO: GetEarthquakesDTO,
   ): EarthquakePromise {
@@ -101,62 +160,28 @@ export class EarthquakesService {
     }
   }
 
-  async create(createEarthquakeDTO: CreateEarthquakesDto) {
-    const { earthquakes } = createEarthquakeDTO;
+  async findForNewsletter() {
+    const start = new Date(new Date().setDate(new Date().getDate() - 1));
+    const end = new Date(new Date().setDate(new Date().getDate() - 1));
+    start.setHours(0, 0, 0, 0);
+    end.setHours(23, 59, 59, 999);
     try {
-      for (const earthquake of earthquakes) {
-        const unid = earthquake.properties['unid'];
-        const earthquakeExists = await this.prisma.earthquakes.findUnique({
-          where: {
-            unid,
-          },
-        });
-
-        if (!earthquakeExists) {
-          await this.prisma.earthquakes.create({
-            data: {
-              auth: earthquake.properties['auth'],
-              depth: earthquake.properties['depth'],
-              evtype: earthquake.properties['evtype'],
-              flynn_region: earthquake.properties['flynn_region'],
-              lastupdate: earthquake.properties['lastupdate'],
-              lat: earthquake.properties['lat'],
-              lon: earthquake.properties['lon'],
-              mag: earthquake.properties['mag'],
-              magtype: earthquake.properties['magtype'],
-              source_catalog: earthquake.properties['source_catalog'],
-              source_id: earthquake.properties['source_id'],
-              unid,
-              time: earthquake.properties['time'],
-            },
-          });
-        }
-      }
-      return earthquakes;
-    } catch (error) {
-      return error;
-    }
-  }
-
-  async delete() {
-    try {
+      const where = Prisma.validator<Prisma.EarthquakesWhereInput>()({
+        time: { gte: start, lte: end },
+      });
       const count = await this.prisma.earthquakes.count({
-        where: {
-          time: {
-            lte: new Date(new Date().setDate(new Date().getDate() - 1)),
-          },
+        where,
+      });
+      const earthquakes = await this.prisma.earthquakes.findMany({
+        where,
+        orderBy: {
+          mag: 'desc',
         },
       });
-      await this.prisma.earthquakes.deleteMany({
-        where: {
-          time: {
-            lte: new Date(new Date().setDate(new Date().getDate() - 1)),
-          },
-        },
-      });
-      return { success: true, count };
+      const strongest = earthquakes[0];
+      return { earthquakes, count, strongest };
     } catch (error) {
-      return { success: false, error };
+      return { error };
     }
   }
 }
