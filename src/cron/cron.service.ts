@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { EarthquakesService } from 'src/earthquakes/earthquakes.service';
 import { MailerService } from 'src/mailer/mailer.service';
@@ -12,6 +13,7 @@ export class CronService {
     private users: UsersService,
     private mailer: MailerService,
     private config: ConfigService,
+    private jwt: JwtService,
   ) {}
 
   @Cron(CronExpression.EVERY_5_MINUTES)
@@ -56,10 +58,11 @@ export class CronService {
   async sendDailyNewsletter() {
     const subscribers = await this.users.findSubscribedUsers();
     if (subscribers) {
-      const { earthquakes, count, strongest } =
+      const { region, count, strongest } =
         await this.earthquakesService.findForNewsletter();
       subscribers.forEach(async (subscriber) => {
         const receivers = { email: subscriber.email };
+
         const mailData = {
           sender: { email: this.config.get<string>('EMAIL_SENDER') },
           receivers: [receivers],
@@ -70,12 +73,30 @@ export class CronService {
             strongestMag: strongest.mag.toFixed(1),
             flynn_region: strongest.flynn_region,
             strongestDepth: strongest.depth.toFixed(1),
+            mostActiveRegion: region.region,
+            mostActiveCount: region.count,
+            meanMagnitude: region.mean.toFixed(1),
+            url: `/unsubscribe/${await this.getToken(
+              subscriber.id,
+              subscriber.email,
+            )}`,
           },
         };
+        console.log(mailData);
         await this.mailer.sendMail(mailData, 'newsletter');
       });
     } else {
       console.log('No subscribers to send email to.');
     }
+  }
+
+  async getToken(id: number, email: string) {
+    const [Token] = await Promise.all([
+      this.jwt.signAsync(
+        { id, email },
+        { secret: this.config.get<string>('JWT_SECRET'), expiresIn: '1d' },
+      ),
+    ]);
+    return Token;
   }
 }
