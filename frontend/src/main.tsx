@@ -8,6 +8,7 @@ import 'tippy.js/dist/tippy.css';
 import App from './App';
 import './index.css';
 import { ErrorPage } from './pages/ErrorPage/ErrorPage';
+import { UnsubscribePage } from './pages/Unsubscribe/Unsubscribe';
 import { store } from './redux/store';
 import './translations/i18n';
 
@@ -15,6 +16,11 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <ErrorPage title="Error" description="Page not found" />,
+  },
+  {
+    path: '/unsubscribe/:token',
+    element: <UnsubscribePage />,
     errorElement: <ErrorPage title="Error" description="Page not found" />,
   },
 ]);
