@@ -178,10 +178,33 @@ export class EarthquakesService {
           mag: 'desc',
         },
       });
+
+      const region = await findMostActiveRegion(earthquakes, count);
       const strongest = earthquakes[0];
-      return { earthquakes, count, strongest };
+
+      return { region, count, strongest };
     } catch (error) {
       return { error };
     }
   }
+}
+
+async function findMostActiveRegion(
+  earthquakes: any[],
+  count: number,
+): Promise<{ region: string; count: number; mean: number }> {
+  const regions = earthquakes.map((earthquake) => earthquake.flynn_region);
+  const total = earthquakes.reduce((acc, earthquake) => {
+    return acc + earthquake.mag;
+  }, 0);
+  const mean = total / count;
+  const uniqueRegions = [...new Set(regions)];
+  const counts = uniqueRegions.map((region) => {
+    return {
+      region,
+      count: regions.filter((r) => r === region).length,
+    };
+  });
+  const sortedCounts = counts.sort((a, b) => b.count - a.count);
+  return { region: sortedCounts[0].region, count: sortedCounts[0].count, mean };
 }
