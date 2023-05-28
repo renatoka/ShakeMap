@@ -20,3 +20,11 @@ export interface Earthquake {
   time: Date;
   unid: string;
 }
+
+export interface UserPromise {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  activeSubscription: boolean;
+}
