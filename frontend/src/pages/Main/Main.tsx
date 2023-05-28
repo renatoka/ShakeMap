@@ -3,7 +3,7 @@ import Map, { MapRef } from 'react-map-gl';
 import { PulsingDot, SubscribeModal } from '../../components/components';
 import { RotatingSpeed } from '../../helpers/rotatingSpeed.services';
 import { RouteErrorProps } from '../../interfaces/interfaces.types';
-import { getEarthquakes, getMapboxToken } from '../../redux/actions';
+import { getMapboxToken } from '../../redux/actions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { ErrorPage } from '../ErrorPage/ErrorPage';
 import { Sidebar } from './components';
@@ -47,7 +47,6 @@ export const Main = () => {
 
   useEffect(() => {
     dispatch(getMapboxToken());
-    dispatch(getEarthquakes({ limit: 20 }));
   }, [dispatch]);
 
   useEffect(() => {
