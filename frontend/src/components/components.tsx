@@ -158,8 +158,6 @@ export const SubscribeModal = () => {
     for (const [key, value] of Object.entries(inputs)) {
       if (value === '') {
         setErrors((prev) => ({ ...prev, [key]: t('GENERIC.REQUIRED_FIELD') }));
-      } else {
-        setErrors((prev) => ({ ...prev, [key]: '' }));
       }
     }
   }, [inputs, t, isFirstLoad]);
@@ -198,7 +196,7 @@ export const SubscribeModal = () => {
       transition={{ duration: 0.2 }}
     >
       <div className="flex flex-col items-center justify-center w-full h-full">
-        <div className="flex flex-col justify-center items-center w-full h-full md:w-[550px] md:h-fit bg-black rounded-lg text-white p-4 gap-3 relative">
+        <div className="flex flex-col justify-center items-center w-full h-full md:w-[550px] md:h-fit bg-black md:rounded-lg text-white p-4 gap-3 relative">
           <div className="absolute top-0 right-0 m-4">
             <CloseIcon
               className="cursor-pointer"
