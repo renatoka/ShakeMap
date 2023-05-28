@@ -76,13 +76,14 @@ export class CronService {
             mostActiveRegion: region.region,
             mostActiveCount: region.count,
             meanMagnitude: region.mean.toFixed(1),
-            url: `/unsubscribe/${await this.getToken(
-              subscriber.id,
-              subscriber.email,
-            )}`,
+            url:
+              this.config.get<string>('BASE_URL') +
+              `/unsubscribe/${await this.getToken(
+                subscriber.id,
+                subscriber.email,
+              )}`,
           },
         };
-        console.log(mailData);
         await this.mailer.sendMail(mailData, 'newsletter');
       });
     } else {
@@ -91,12 +92,16 @@ export class CronService {
   }
 
   async getToken(id: number, email: string) {
-    const [Token] = await Promise.all([
-      this.jwt.signAsync(
-        { id, email },
-        { secret: this.config.get<string>('JWT_SECRET'), expiresIn: '1d' },
-      ),
-    ]);
+    const payload = { id, email };
+    const Token = await this.jwt.signAsync(payload, {
+      secret: this.config.get<string>('JWT_SECRET'),
+      expiresIn: '1h',
+    });
+
+    this.jwt.verifyAsync(Token, {
+      secret: this.config.get<string>('JWT_SECRET'),
+    });
+
     return Token;
   }
 }
