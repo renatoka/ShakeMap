@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -8,9 +8,6 @@ import { MapboxTokenModule } from './mapbox-token/mapbox-token.module';
 import { UsersModule } from './users/users.module';
 import { MailerService } from './mailer/mailer.service';
 import { JwtModule } from '@nestjs/jwt';
-
-const configService = new ConfigService();
-
 @Module({
   imports: [
     EarthquakesModule,
@@ -20,8 +17,8 @@ const configService = new ConfigService();
     }),
     JwtModule.register({
       global: true,
-      signOptions: { expiresIn: '1h' },
-      secret: configService.get<string>('JWT_SECRET'),
+      signOptions: { expiresIn: '1h', algorithm: 'HS256' },
+      secret: process.env.JWT_SECRET,
     }),
     ScheduleModule.forRoot(),
     UsersModule,
