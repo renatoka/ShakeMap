@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { MailerService } from 'src/mailer/mailer.service';
 import { ConfigService } from '@nestjs/config';
+import { UserPromise } from 'src/interfaces';
 
 @Injectable()
 export class UsersService {
@@ -11,7 +12,17 @@ export class UsersService {
     private mailer: MailerService,
     private config: ConfigService,
   ) {}
-  async create(createUserDto: CreateUserDto) {
+
+  async findOne(id: string): Promise<UserPromise> {
+    const user = await this.prisma.users.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+    return user;
+  }
+
+  async create(createUserDto: CreateUserDto): Promise<boolean> {
     try {
       const receivers = { email: createUserDto.email };
       const user = await this.prisma.users.create({
@@ -40,7 +51,19 @@ export class UsersService {
     }
   }
 
-  async findSubscribedUsers() {
+  async unsubscribeUser(id: string): Promise<boolean> {
+    const user = await this.prisma.users.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        activeSubscription: false,
+      },
+    });
+    return user.activeSubscription === false ? true : false;
+  }
+
+  async findSubscribedUsers(): Promise<UserPromise[]> {
     const subscribers = await this.prisma.users.findMany({
       where: {
         activeSubscription: true,
@@ -48,12 +71,4 @@ export class UsersService {
     });
     return subscribers;
   }
-
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} user`;
-  // }
 }
