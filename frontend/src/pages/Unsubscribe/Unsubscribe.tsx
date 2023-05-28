@@ -47,11 +47,17 @@ export const UnsubscribePage = () => {
             <h1 className="text-3xl font-medium text-center">
               Dear {user.firstName},
             </h1>
-            <h2 className="text-xl text-center">
-              We are sorry to see you go, but we respect your decision.
-              <br />
-              You have been unsubscribed from our mailing list.
-            </h2>
+            {!user.activeSubscription ? (
+              <h2 className="text-xl text-center">
+                Seems like you are not subscribed to our mailing list.
+              </h2>
+            ) : (
+              <h2 className="text-xl text-center">
+                We are sorry to see you go, but we respect your decision.
+                <br />
+                You have been unsubscribed from our mailing list.
+              </h2>
+            )}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center gap-2">
