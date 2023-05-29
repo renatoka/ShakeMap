@@ -62,7 +62,7 @@ export class CronService {
         await this.earthquakesService.findForNewsletter();
       subscribers.forEach(async (subscriber) => {
         const receivers = { email: subscriber.email };
-
+        const Token = await this.getToken(subscriber.id, subscriber.email);
         const mailData = {
           sender: { email: this.config.get<string>('EMAIL_SENDER') },
           receivers: [receivers],
@@ -76,12 +76,7 @@ export class CronService {
             mostActiveRegion: region.region,
             mostActiveCount: region.count,
             meanMagnitude: region.mean.toFixed(1),
-            url:
-              this.config.get<string>('BASE_URL') +
-              `/unsubscribe/${await this.getToken(
-                subscriber.id,
-                subscriber.email,
-              )}`,
+            url: this.config.get<string>('BASE_URL') + `/unsubscribe/${Token}`,
           },
         };
         await this.mailer.sendMail(mailData, 'newsletter');
