@@ -1,7 +1,16 @@
-import { Controller, Post, Body, Get, Query, Patch } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Query,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserPromise } from 'src/interfaces';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('api/users')
 export class UsersController {
@@ -17,6 +26,7 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   unsubscribeUser(@Query('id') id: string): Promise<boolean> {
     return this.usersService.unsubscribeUser(id);
