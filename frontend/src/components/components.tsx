@@ -65,9 +65,8 @@ export const PulsingDot = ({
           data-tooltip-id={`tooltip-${unid}`}
         >
           <div
-            className={`absolute top-0 left-0 border-2 border-white ${
-              pulsing ? 'animate-ping' : 'animate-none'
-            }`}
+            className={`absolute top-0 left-0 border-2 border-white ${pulsing ? 'animate-ping' : 'animate-none'
+              }`}
             style={{
               width: '12px',
               height: '12px',
@@ -196,7 +195,7 @@ export const SubscribeModal = () => {
       transition={{ duration: 0.2 }}
     >
       <div className="flex flex-col items-center justify-center w-full h-full">
-        <div className="flex flex-col justify-center items-center w-full h-full md:w-[550px] md:h-fit bg-black md:rounded-lg text-white p-4 gap-3 relative">
+        <div className="flex flex-col justify-center w-full h-full md:w-[550px] md:h-fit bg-black md:rounded-lg p-4 gap-3 relative text-white">
           <div className="absolute top-0 right-0 m-4">
             <CloseIcon
               className="cursor-pointer"
@@ -207,15 +206,12 @@ export const SubscribeModal = () => {
             <h1 className="text-2xl md:text-3xl font-bold whitespace-break-spaces">
               {t('SUBSCRIBE_MODAL.TITLE')}
             </h1>
-            <p className="text-sm md:text-base font-medium">
-              {t('SUBSCRIBE_MODAL.DESCRIPTION')}
-            </p>
           </>
           <div className="flex flex-col gap-2 w-full">
             <input
               type="text"
               placeholder={t('SUBSCRIBE_MODAL.FIRST_NAME') + '*'}
-              className="bg-black text-white border-2 border-white rounded-md p-2 focus:outline-none"
+              className="border-[1px] rounded-md p-2 focus:outline-none bg-transparent"
               onChange={(e) =>
                 setInputs({ ...inputs, firstName: e.target.value })
               }
@@ -226,7 +222,7 @@ export const SubscribeModal = () => {
             <input
               type="text"
               placeholder={t('SUBSCRIBE_MODAL.LAST_NAME') + '*'}
-              className="bg-black text-white border-2 border-white rounded-md p-2 focus:outline-none"
+              className="border-[1px] rounded-md p-2 focus:outline-none bg-transparent"
               onChange={(e) =>
                 setInputs({ ...inputs, lastName: e.target.value })
               }
@@ -237,7 +233,7 @@ export const SubscribeModal = () => {
             <input
               type="email"
               placeholder={t('SUBSCRIBE_MODAL.EMAIL') + '*'}
-              className="bg-black text-white border-2 border-white rounded-md p-2 focus:outline-none"
+              className="border-[1px] rounded-md p-2 focus:outline-none bg-transparent"
               onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
             />
             {errors.email && (
@@ -255,4 +251,4 @@ export const SubscribeModal = () => {
       </div>
     </motion.div>
   );
-};
+}
