@@ -3,12 +3,14 @@ import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { getUser, unsubscribeUser } from './helperFunctions';
 import { CircularProgress } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 export const UnsubscribePage = () => {
   const { token } = useParams<{ token: string }>();
   const [tokenData, setTokenData] = useState<any>({});
   const [user, setUser] = useState<any>({});
   const [unsubscribeSuccess, setUnsubscribeSuccess] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (token) {
@@ -19,8 +21,8 @@ export const UnsubscribePage = () => {
 
   useEffect(() => {
     (async () => {
-      if (tokenData.id) {
-        const user = await getUser(tokenData.id);
+      if (tokenData.id && token) {
+        const user = await getUser(tokenData.id, token);
         if (user) {
           setUser(user);
         }
@@ -30,8 +32,8 @@ export const UnsubscribePage = () => {
 
   useEffect(() => {
     (async () => {
-      if (user.id) {
-        const unsubscribe = await unsubscribeUser(user.id);
+      if (user.id && token) {
+        const unsubscribe = await unsubscribeUser(user.id, token);
         if (unsubscribe) {
           setUnsubscribeSuccess(true);
         }
@@ -43,19 +45,17 @@ export const UnsubscribePage = () => {
     <div className="w-screen h-screen flex justify-center items-center">
       <div className="flex flex-col items-center justify-center gap-2">
         {unsubscribeSuccess && user ? (
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center whitespace-pre-line">
             <h1 className="text-3xl font-medium text-center">
-              Dear {user.firstName},
+              {t('UNSUBSCRIBE_PAGE.TITLE', { firstName: user.firstName })}
             </h1>
             {!user.activeSubscription ? (
               <h2 className="text-xl text-center">
-                Seems like you are not subscribed to our mailing list.
+                {t('UNSUBSCRIBE_PAGE.ALREADY_UNSUBSCRIBED')}
               </h2>
             ) : (
               <h2 className="text-xl text-center">
-                We are sorry to see you go, but we respect your decision.
-                <br />
-                You have been unsubscribed from our mailing list.
+                {t('UNSUBSCRIBE_PAGE.SUCCESS_MESSAGE')}
               </h2>
             )}
           </div>
