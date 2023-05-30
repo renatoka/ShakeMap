@@ -8,6 +8,9 @@ import { MapboxTokenModule } from './mapbox-token/mapbox-token.module';
 import { UsersModule } from './users/users.module';
 import { MailerService } from './mailer/mailer.service';
 import { JwtModule } from '@nestjs/jwt';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+
 @Module({
   imports: [
     EarthquakesModule,
@@ -19,6 +22,9 @@ import { JwtModule } from '@nestjs/jwt';
       global: true,
       signOptions: { expiresIn: '1h', algorithm: 'HS256' },
       secret: process.env.JWT_SECRET,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'frontend', 'dist'),
     }),
     ScheduleModule.forRoot(),
     UsersModule,
