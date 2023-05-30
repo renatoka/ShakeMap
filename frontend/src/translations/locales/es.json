@@ -16,8 +16,8 @@
     "SUBSCRIBE": "Suscribir"
   },
   "SUBSCRIBE_MODAL": {
-    "TITLE": "Boletín informativo",
-    "DESCRIPTION": "Te enviaremos un correo electrónico por día con las estadísticas de las últimas horas. Puedes darte de baja en cualquier momento. Nunca compartiremos tu dirección de correo electrónico con nadie más",
+    "TITLE": "Suscríbete a nuestro boletín!",
+    "DESCRIPTION": "Sea el primero en recibir las últimas actualizaciones de terremotos.",
     "FIRST_NAME": "Nombre",
     "LAST_NAME": "Apellido",
     "EMAIL": "E-Mail",
@@ -27,5 +27,10 @@
     "YES": "Sí",
     "NO": "No",
     "REQUIRED_FIELD": "Este campo es obligatorio"
+  },
+  "UNSUBSCRIBE_PAGE": {
+    "TITLE": "Estimado {{firstName}},",
+    "ALREADY_UNSUBSCRIBED": "Parece que no estás suscrito a nuestra lista de correo.",
+    "SUCCESS_MESSAGE": "Lamentamos que te vayas, pero respetamos tu decisión.\nSe ha dado de baja con éxito de nuestra lista de correo."
   }
 }

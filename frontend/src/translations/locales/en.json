@@ -16,8 +16,8 @@
     "SUBSCRIBE": "Subscribe"
   },
   "SUBSCRIBE_MODAL": {
-    "TITLE": "Newsletter",
-    "DESCRIPTION": "We will send you one email per day with the statistics of the last hours. You can unsubscribe at any time. We will never share your email address with anyone else.",
+    "TITLE": "Subscribe to our Newsletter!",
+    "DESCRIPTION": "Be the first one to get the latest earthquake updates.",
     "FIRST_NAME": "First name",
     "LAST_NAME": "Last name",
     "EMAIL": "Email",
@@ -27,5 +27,10 @@
     "YES": "Yes",
     "NO": "No",
     "REQUIRED_FIELD": "This field is required"
+  },
+  "UNSUBSCRIBE_PAGE": {
+    "TITLE": "Dear {{firstName}},",
+    "ALREADY_UNSUBSCRIBED": "Seems like you are not subscribed to our mailing list.",
+    "SUCCESS_MESSAGE": "We are sorry to see you go, but we respect your decision.\nYou have been successfully unsubscribed from our mailing list."
   }
 }

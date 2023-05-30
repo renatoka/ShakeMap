@@ -16,8 +16,8 @@
     "SUBSCRIBE": "Abonnieren"
   },
   "SUBSCRIBE_MODAL": {
-    "TITLE": "Newsletter",
-    "DESCRIPTION": "Wir senden Ihnen eine E-Mail pro Tag mit den Statistiken der letzten Stunden. Sie können sich jederzeit abmelden. Wir werden Ihre E-Mail-Adresse niemals an Dritte weitergeben.",
+    "TITLE": "Abonniere unseren Newsletter!",
+    "DESCRIPTION": "Seien Sie der Erste, der die neuesten Erdbeben-Updates erhält.",
     "FIRST_NAME": "Vorname",
     "LAST_NAME": "Nachname",
     "EMAIL": "E-Mail",
@@ -27,5 +27,10 @@
     "YES": "Ja",
     "NO": "Nein",
     "REQUIRED_FIELD": "Dieses Feld ist erforderlich"
+  },
+  "UNSUBSCRIBE_PAGE": {
+    "TITLE": "Lieber {{firstName}},",
+    "ALREADY_UNSUBSCRIBED": "Anscheinend sind Sie nicht in unsere Mailingliste eingetragen.",
+    "SUCCESS_MESSAGE": "Es tut uns leid, dass Sie gehen, aber wir respektieren Ihre Entscheidung.\nSie wurden erfolgreich von unserer Mailingliste abgemeldet."
   }
 }
