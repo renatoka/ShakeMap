@@ -64,35 +64,31 @@ export const Main = () => {
   }, [window.innerWidth]);
 
   useEffect(() => {
-    if (loading) {
-      setActionModalData({
-        description: 'We are loading the map for you.',
-        title: 'Hold on!',
-      });
+    let description = '';
+    let title = 'Hold on!';
+
+    switch (true) {
+      case loading:
+        description = 'We are loading the map for you.';
+        break;
+      case error:
+        description = 'We are having some issues loading the map.';
+        break;
+      case earthquakesData && earthquakesData.length === 0:
+        description = 'There are no earthquakes to show.';
+        break;
+      default:
+        break;
     }
-    if (error) {
-      setActionModalData({
-        description: 'We are having some issues loading the map.',
-        title: 'Hold on!',
-      });
+
+    if (description) {
+      setActionModalData({ description, title });
     }
-  }, [loading, error]);
+  }, [loading, error, mapboxToken, earthquakesData]);
 
   useEffect(() => {
-    if (!mapboxToken) {
-      setActionModalData({
-        description: 'Hold on, we are trying to fix this issue.',
-        title: 'Hold on!',
-      });
-    }
-  }, [mapboxToken]);
-
-  useEffect(() => {
-    if (!earthquakesData) {
-      setActionModalData({
-        description: 'Hold on, we are trying to fix this issue.',
-        title: 'Hold on!',
-      });
+    if (earthquakesData && earthquakesData.length > 0) {
+      setActionModalData(undefined);
     }
   }, [earthquakesData]);
 
@@ -162,37 +158,34 @@ export const Main = () => {
   return (
     <>
       <div>
-        {loading ||
-          error ||
-          !mapboxToken ||
-          (!earthquakesData && (
-            <ErrorPage description={actionModalData?.description!} title={''} />
-          ))}
+        {actionModalData && <ErrorPage {...actionModalData} />}
         {mapboxToken && (
-          <Map
-            {...viewState}
-            projection={projection}
-            optimizeForTerrain={true}
-            onMove={(event) => setViewState(event.viewState)}
-            onZoom={(event) => setZoom(event.viewState.zoom)}
-            style={{ width: '100vw', height: '100vh' }}
-            mapStyle="mapbox://styles/rkauric/clftyk5ry007v01o5hw5kdzpr"
-            mapboxAccessToken={mapboxToken}
-            ref={(map) => setMapRef(map)}
-            reuseMaps={true}
-          >
-            {earthquakesData &&
-              earthquakesData.length > 0 &&
-              earthquakesData.map((earthquake: any) => (
-                <PulsingDot key={earthquake.id} {...earthquake} />
-              ))}
-          </Map>
+          <>
+            <Map
+              {...viewState}
+              projection={projection}
+              optimizeForTerrain={true}
+              onMove={(event) => setViewState(event.viewState)}
+              onZoom={(event) => setZoom(event.viewState.zoom)}
+              style={{ width: '100vw', height: '100vh' }}
+              mapStyle="mapbox://styles/rkauric/clftyk5ry007v01o5hw5kdzpr"
+              mapboxAccessToken={mapboxToken}
+              ref={(map) => setMapRef(map)}
+              reuseMaps={true}
+            >
+              {earthquakesData &&
+                earthquakesData.length > 0 &&
+                earthquakesData.map((earthquake: any) => (
+                  <PulsingDot key={earthquake.id} {...earthquake} />
+                ))}
+            </Map>
+            <Sidebar
+              setZoomInCoordinates={setZoomInCoordinates}
+              zoomInCoordinates={zoomInCoordinates}
+            />
+          </>
         )}
       </div>
-      <Sidebar
-        setZoomInCoordinates={setZoomInCoordinates}
-        zoomInCoordinates={zoomInCoordinates}
-      />
       {showSubscribeModal && <SubscribeModal />}
     </>
   );
