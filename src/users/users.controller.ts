@@ -16,7 +16,8 @@ import { AuthGuard } from 'src/auth/auth.guard';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get()
+  @UseGuards(AuthGuard)
+  @Get(':id')
   async findOne(@Query('id') id: string): Promise<UserPromise> {
     return this.usersService.findOne(id);
   }
@@ -27,7 +28,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard)
-  @Patch(':id')
+  @Patch('/unsubscribe/:id')
   unsubscribeUser(@Query('id') id: string): Promise<boolean> {
     return this.usersService.unsubscribeUser(id);
   }
