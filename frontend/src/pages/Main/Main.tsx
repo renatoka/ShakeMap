@@ -74,9 +74,6 @@ export const Main = () => {
       case error:
         description = 'We are having some issues loading the map.';
         break;
-      case earthquakesData && earthquakesData.length === 0:
-        description = 'There are no earthquakes to show.';
-        break;
       default:
         break;
     }
