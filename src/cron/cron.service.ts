@@ -5,6 +5,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { EarthquakesService } from 'src/earthquakes/earthquakes.service';
 import { MailerService } from 'src/mailer/mailer.service';
 import { UsersService } from 'src/users/users.service';
+
 @Injectable()
 export class CronService {
   private logger = new Logger(CronService.name);
@@ -54,7 +55,7 @@ export class CronService {
     }
   }
 
-  @Cron(CronExpression.EVERY_HOUR)
+  @Cron(CronExpression.EVERY_DAY_AT_9PM)
   async sendDailyNewsletter() {
     const subscribers = await this.users.findSubscribedUsers();
     if (subscribers) {
