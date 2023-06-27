@@ -4,12 +4,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { MailerService } from 'src/mailer/mailer.service';
 import { ConfigService } from '@nestjs/config';
 import { UserPromise } from 'src/interfaces';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
   constructor(
     private prisma: PrismaService,
     private mailer: MailerService,
+    private jwt: JwtService,
     private config: ConfigService,
   ) {}
 
@@ -33,12 +35,14 @@ export class UsersService {
           activeSubscription: true,
         },
       });
+      const Token = await this.getToken(user.id, user.email);
       const mailData = {
         sender: { email: this.config.get<string>('EMAIL_SENDER') },
         receivers: [receivers],
         subject: 'Thank you for signing up!',
         params: {
           firstName: user.firstName,
+          url: this.config.get<string>('BASE_URL') + `/unsubscribe/${Token}`,
         },
       };
       await this.mailer.sendMail(mailData, 'signup');
@@ -70,5 +74,19 @@ export class UsersService {
       },
     });
     return subscribers;
+  }
+
+  async getToken(id: number, email: string) {
+    const payload = { id, email };
+    const Token = await this.jwt.signAsync(payload, {
+      secret: this.config.get<string>('JWT_SECRET'),
+      expiresIn: '1h',
+    });
+
+    this.jwt.verifyAsync(Token, {
+      secret: this.config.get<string>('JWT_SECRET'),
+    });
+
+    return Token;
   }
 }
