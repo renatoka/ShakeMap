@@ -20,20 +20,14 @@ export class CronService {
   @Cron(CronExpression.EVERY_5_MINUTES)
   async checkForEarthquakes() {
     try {
-      const startTime = new Date().getTime();
       const start = new Date(new Date().setHours(0, 0, 0, 0));
       const end = new Date(new Date().setMinutes(new Date().getMinutes() - 5));
       await this.earthquakesService.fetchEarthquakes({
         start: start.toISOString(),
         end: end.toISOString(),
-        limit: null,
+        limit: 1000,
       });
-      const endTime = new Date().getTime();
-      this.logger.log(
-        `CRON: Fetched and save earthquakes. Time took: ${
-          endTime - startTime
-        } ms`,
-      );
+      Logger.log('Fetched earthquakes from API.');
     } catch (error) {
       Logger.error(error, 'CRON');
     }
@@ -42,13 +36,9 @@ export class CronService {
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async deleteOldEarthquakes() {
     try {
-      const startTime = new Date().getTime();
       const deleteProcess = await this.earthquakesService.delete();
-      const endTime = new Date().getTime();
-      this.logger.log(
-        `CRON: Deleted old earthquakes. Time took: ${
-          endTime - startTime
-        } ms. Deteted: ${deleteProcess.count} earthquakes`,
+      Logger.log(
+        `CRON: Deleted ${deleteProcess.count} earthquakes from database.`,
       );
     } catch (error) {
       Logger.error(error, 'CRON');
