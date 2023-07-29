@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Earthquakes" ALTER COLUMN "depth" SET DATA TYPE DOUBLE PRECISION;

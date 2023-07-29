@@ -10,7 +10,7 @@ datasource db {
 model Earthquakes {
   id             Int      @id @default(autoincrement())
   auth           String
-  depth          Int
+  depth          Float
   evtype         String
   flynn_region   String
   lastupdate     DateTime
