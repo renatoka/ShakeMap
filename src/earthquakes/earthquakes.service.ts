@@ -16,7 +16,7 @@ export class EarthquakesService {
   async create(createEarthquakeDTO: CreateEarthquakesDto) {
     const { earthquakes } = createEarthquakeDTO;
     try {
-      for (const earthquake of earthquakes) {
+      const savePromises = earthquakes.map(async (earthquake) => {
         const unid = earthquake.properties['unid'];
         const earthquakeExists = await this.prisma.earthquakes.findUnique({
           where: {
@@ -43,7 +43,10 @@ export class EarthquakesService {
             },
           });
         }
-      }
+      });
+
+      await Promise.all(savePromises);
+
       return earthquakes;
     } catch (error) {
       return error;
@@ -66,16 +69,16 @@ export class EarthquakesService {
           },
         },
       });
-      return { success: true, count };
+      return count;
     } catch (error) {
-      return { success: false, error };
+      return error;
     }
   }
 
   async fetchEarthquakes(
     getEarthquakesDTO: GetEarthquakesDTO,
   ): EarthquakePromise {
-    const { end, start } = getEarthquakesDTO;
+    const { start, end } = getEarthquakesDTO;
     try {
       const response = await firstValueFrom(
         this.httpService.get(
@@ -87,12 +90,14 @@ export class EarthquakesService {
         delete feature.type;
         delete feature.id;
       });
-
       await this.create({ earthquakes: response.data.features });
 
-      return { earthquakes: response.data.features };
+      return {
+        earthquakes: response.data.features,
+        count: response.data.features.length,
+      };
     } catch (error) {
-      return { error };
+      return error;
     }
   }
 
@@ -124,25 +129,18 @@ export class EarthquakesService {
 
       return { earthquakes, count };
     } catch (error) {
-      return { error };
+      return error;
     }
   }
 
   async fetchAndGetEarthquakesByDate(
     getEarthquakesDTO: GetEarthquakesDTO,
-  ): EarthquakePromise {
+  ): Promise<EarthquakePromise> {
     const { start, end, limit } = getEarthquakesDTO;
     try {
       await this.fetchEarthquakes(getEarthquakesDTO);
       const where = Prisma.validator<Prisma.EarthquakesWhereInput>()({
-        ...(start && end && { time: { gte: start, lte: end } }),
-        ...(!start &&
-          !end && {
-            time: {
-              gte: new Date(new Date().setHours(0, 0, 0, 0)),
-              lte: new Date(),
-            },
-          }),
+        time: { gte: start, lte: end },
       });
       const count = await this.prisma.earthquakes.count({
         where,
@@ -184,7 +182,7 @@ export class EarthquakesService {
 
       return { region, count, strongest };
     } catch (error) {
-      return { error };
+      return error;
     }
   }
 }
