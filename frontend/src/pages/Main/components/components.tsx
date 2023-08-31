@@ -320,8 +320,9 @@ export const SettingsList = () => {
             </div>
             <div className="w-full">
               <button
-                className="w-full bg-transparent text-white text-lg font-medium border-[1px] hover:bg-orange-500 hover:border-orange-500 border-white py-2 px-4 rounded-md focus:outline-none active:bg-orange-700 active:border-orange-700"
+                className="w-full bg-transparent text-white text-lg font-medium border-[1px] hover:bg-orange-500 hover:border-orange-500 border-white py-2 px-4 rounded-md focus:outline-none active:bg-orange-700 active:border-orange-700 cursor-not-allowed"
                 onClick={() => dispatch(setShowSubscribeModalAction(true))}
+                disabled
               >
                 {t('SETTINGS.SUBSCRIBE')}
               </button>

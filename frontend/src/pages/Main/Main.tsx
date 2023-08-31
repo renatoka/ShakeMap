@@ -33,6 +33,10 @@ export const Main = () => {
   });
 
   useEffect(() => {
+    dispatch(getMapboxToken());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (projection != 'globe') {
       setViewState({
         ...viewState,
@@ -46,20 +50,31 @@ export const Main = () => {
   }, [projection]);
 
   useEffect(() => {
-    dispatch(getMapboxToken());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (window.innerWidth < 768) {
-      setViewState({
-        ...viewState,
-        zoom: 0.9,
-      });
-    } else {
-      setViewState({
-        ...viewState,
-        zoom: 1.8,
-      });
+    switch (true) {
+      case window.innerWidth < 768 && window.innerWidth > 425:
+        setViewState({
+          ...viewState,
+          zoom: 0.9,
+        });
+        break;
+      case window.innerWidth < 1024 && window.innerWidth > 768:
+        setViewState({
+          ...viewState,
+          zoom: 1.2,
+        });
+        break;
+      case window.innerWidth < 1440 && window.innerWidth > 1024:
+        setViewState({
+          ...viewState,
+          zoom: 1.5,
+        });
+        break;
+      default:
+        setViewState({
+          ...viewState,
+          zoom: 1.8,
+        });
+        break;
     }
   }, [window.innerWidth]);
 
@@ -85,7 +100,7 @@ export const Main = () => {
 
   useEffect(() => {
     if (earthquakesData && earthquakesData.length > 0) {
-      setActionModalData(undefined);
+      setActionModalData({ description: '', title: '' });
     }
   }, [earthquakesData]);
 
@@ -99,11 +114,8 @@ export const Main = () => {
   useEffect(() => {
     if (zoomInCoordinates && !rotating && mapRef) {
       mapRef.flyTo({
-        center: [
-          zoomInCoordinates.lon as number,
-          zoomInCoordinates.lat as number,
-        ],
-        zoom: zoomInCoordinates.zoom as number,
+        center: [zoomInCoordinates.lon, zoomInCoordinates.lat],
+        zoom: zoomInCoordinates.zoom,
       });
       setZoomInCoordinates(undefined);
     }
@@ -155,12 +167,17 @@ export const Main = () => {
   return (
     <>
       <div>
-        {actionModalData && <ErrorPage {...actionModalData} />}
+        {actionModalData?.title && actionModalData?.description && (
+          <ErrorPage
+            title={actionModalData.title}
+            description={actionModalData.description}
+          />
+        )}
         {mapboxToken && (
           <>
             <Map
               {...viewState}
-              projection={projection}
+              projection={projection.split('-')[0] as any}
               optimizeForTerrain={true}
               onMove={(event) => setViewState(event.viewState)}
               onZoom={(event) => setZoom(event.viewState.zoom)}
