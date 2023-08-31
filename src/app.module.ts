@@ -24,7 +24,8 @@ import { join } from 'path';
       secret: process.env.JWT_SECRET,
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '..', 'frontend', 'dist'),
+      rootPath: join(__dirname, '..', 'frontend', 'dist'),
+      exclude: ['/api*'],
     }),
     ScheduleModule.forRoot(),
     UsersModule,
