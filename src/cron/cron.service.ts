@@ -1,10 +1,10 @@
+import { EarthquakesService } from '@/earthquakes/earthquakes.service';
+import { MailerService } from '@/mailer/mailer.service';
+import { UsersService } from '@/users/users.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { EarthquakesService } from 'src/earthquakes/earthquakes.service';
-import { MailerService } from 'src/mailer/mailer.service';
-import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class CronService {

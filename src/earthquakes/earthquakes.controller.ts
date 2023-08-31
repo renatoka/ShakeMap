@@ -1,7 +1,8 @@
-import { Controller, Get, Query, Res } from '@nestjs/common';
+import { EarthquakePromise } from '@/interfaces';
+import { Controller, Get, Res, Query } from '@nestjs/common';
 import { GetEarthquakesDTO } from './dto/get-earthquakes.dto';
 import { EarthquakesService } from './earthquakes.service';
-import { EarthquakePromise } from 'src/interfaces';
+
 @Controller('api/earthquakes')
 export class EarthquakesController {
   constructor(private earthquakeService: EarthquakesService) {}
@@ -21,9 +22,8 @@ export class EarthquakesController {
     @Res() res,
     @Query() query: GetEarthquakesDTO,
   ): EarthquakePromise {
-    const response = await this.earthquakeService.fetchAndGetEarthquakesByDate(
-      query,
-    );
+    const response =
+      await this.earthquakeService.fetchAndGetEarthquakesByDate(query);
     res.set('X-Total-Count', response.count);
     return res.json(response.earthquakes);
   }

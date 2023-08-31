@@ -1,5 +1,3 @@
-// validate nested
-
 import {
   IsNotEmpty,
   IsString,

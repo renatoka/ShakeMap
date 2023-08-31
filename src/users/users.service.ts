@@ -1,10 +1,10 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { MailerService } from 'src/mailer/mailer.service';
+import { MailerService } from '@/mailer/mailer.service';
 import { ConfigService } from '@nestjs/config';
 import { UserPromise } from 'src/interfaces';
 import { JwtService } from '@nestjs/jwt';
+import { PrismaService } from '@/prisma/prisma.service';
 
 @Injectable()
 export class UsersService {

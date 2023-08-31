@@ -1,11 +1,12 @@
+import { EarthquakePromise } from '@/interfaces';
+import { PrismaService } from '@/prisma/prisma.service';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { firstValueFrom } from 'rxjs';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateEarthquakesDto } from './dto/create-earthquakes.dto';
 import { GetEarthquakesDTO } from './dto/get-earthquakes.dto';
-import { Prisma } from '@prisma/client';
-import { EarthquakePromise } from 'src/interfaces';
+
 @Injectable()
 export class EarthquakesService {
   constructor(
