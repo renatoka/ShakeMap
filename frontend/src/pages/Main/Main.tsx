@@ -51,10 +51,10 @@ export const Main = () => {
 
   useEffect(() => {
     switch (true) {
-      case window.innerWidth < 768 && window.innerWidth > 425:
+      case window.innerWidth < 768 && window.innerWidth > 310:
         setViewState({
           ...viewState,
-          zoom: 0.9,
+          zoom: 0.8,
         });
         break;
       case window.innerWidth < 1024 && window.innerWidth > 768:
@@ -96,7 +96,7 @@ export const Main = () => {
     if (description) {
       setActionModalData({ description, title });
     }
-  }, [loading, error, mapboxToken, earthquakesData]);
+  }, [loading, error]);
 
   useEffect(() => {
     if (earthquakesData && earthquakesData.length > 0) {
@@ -117,7 +117,6 @@ export const Main = () => {
         center: [zoomInCoordinates.lon, zoomInCoordinates.lat],
         zoom: zoomInCoordinates.zoom,
       });
-      setZoomInCoordinates(undefined);
     }
   }, [zoomInCoordinates, rotating, mapRef]);
 
@@ -166,40 +165,38 @@ export const Main = () => {
 
   return (
     <>
-      <div>
-        {actionModalData?.title && actionModalData?.description && (
-          <ErrorPage
-            title={actionModalData.title}
-            description={actionModalData.description}
+      {actionModalData?.title && actionModalData?.description && (
+        <ErrorPage
+          title={actionModalData.title}
+          description={actionModalData.description}
+        />
+      )}
+      {mapboxToken && (
+        <>
+          <Map
+            {...viewState}
+            projection={projection as any}
+            optimizeForTerrain={true}
+            onMove={(event) => setViewState(event.viewState)}
+            onZoom={(event) => setZoom(event.viewState.zoom)}
+            style={{ width: '100vw', height: '100vh' }}
+            mapStyle="mapbox://styles/rkauric/clftyk5ry007v01o5hw5kdzpr"
+            mapboxAccessToken={mapboxToken}
+            ref={(map) => setMapRef(map)}
+            reuseMaps={true}
+          >
+            {earthquakesData &&
+              earthquakesData.length > 0 &&
+              earthquakesData.map((earthquake: any) => (
+                <PulsingDot key={earthquake.id} {...earthquake} />
+              ))}
+          </Map>
+          <Sidebar
+            setZoomInCoordinates={setZoomInCoordinates}
+            zoomInCoordinates={zoomInCoordinates}
           />
-        )}
-        {mapboxToken && (
-          <>
-            <Map
-              {...viewState}
-              projection={projection.split('-')[0] as any}
-              optimizeForTerrain={true}
-              onMove={(event) => setViewState(event.viewState)}
-              onZoom={(event) => setZoom(event.viewState.zoom)}
-              style={{ width: '100vw', height: '100vh' }}
-              mapStyle="mapbox://styles/rkauric/clftyk5ry007v01o5hw5kdzpr"
-              mapboxAccessToken={mapboxToken}
-              ref={(map) => setMapRef(map)}
-              reuseMaps={true}
-            >
-              {earthquakesData &&
-                earthquakesData.length > 0 &&
-                earthquakesData.map((earthquake: any) => (
-                  <PulsingDot key={earthquake.id} {...earthquake} />
-                ))}
-            </Map>
-            <Sidebar
-              setZoomInCoordinates={setZoomInCoordinates}
-              zoomInCoordinates={zoomInCoordinates}
-            />
-          </>
-        )}
-      </div>
+        </>
+      )}
       {showSubscribeModal && <SubscribeModal />}
     </>
   );

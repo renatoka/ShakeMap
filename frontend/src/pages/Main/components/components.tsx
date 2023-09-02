@@ -26,16 +26,16 @@ export const Sidebar = ({
 }: SidebarProps) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
+
   const { limit, selectedDate } = useAppSelector((state) => state.settings);
   const { earthquakesData } = useAppSelector((state) => state.earthquakesData);
   const [locale, setLocale] = useState<string>();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (localStorage.getItem('locale') != null) {
       setLocale(localStorage.getItem('locale')!);
     } else {
-      console.warn('Locale not found, setting to en-GB');
       setLocale('en-GB');
     }
   }, []);
@@ -88,7 +88,7 @@ export const Sidebar = ({
         </div>
         <>
           <div className="flex flex-col w-full h-full overflow-y-scroll">
-            <div className="flex flex-col items-start justify-center mb-3">
+            <div className="flex flex-col items-start justify-center px-1">
               <div className="flex items-center w-full relative">
                 <h1 className="text-white text-xl font-medium">
                   {t('HEADER.TITLE')}
@@ -108,9 +108,7 @@ export const Sidebar = ({
                 </Link>
               </p>
               <div className="flex w-full items-center gap-1">
-                <p className="text-white text-sm font-medium">
-                  {t('HEADER.DATE')}:{' '}
-                </p>
+                <p className="text-white text-sm">{t('HEADER.DATE')}: </p>
                 <DatePicker
                   onChange={handleDateChange}
                   value={String(
@@ -170,7 +168,7 @@ export const EarthquakeList = ({ setZoomInCoordinates }: SidebarProps) => {
         earthquakesData.map((earthquake: any) => (
           <div
             key={earthquake.unid}
-            className="flex flex-col hover:bg-orange-500 hover:bg-opacity-30 hover:cursor-pointer rounded p-2"
+            className="flex flex-col hover:bg-orange-500 hover:bg-opacity-30 hover:cursor-pointer rounded py-2 px-1"
             onClick={handleEarthquakeClick(earthquake)}
           >
             <h1 className="text-slate-300 text-xs font-medium">
@@ -236,22 +234,14 @@ export const SettingsList = () => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col w-full items-center gap-2">
+      <div className="flex flex-col w-full items-center mt-2">
         <div className="flex flex-col w-full md:mt-0">
-          <div className="mb-3">
-            <h1 className="text-white text-xl font-medium">
-              {t('SETTINGS.TITLE')}
-            </h1>
-          </div>
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <div>
                 <h1 className="text-white text-lg font-medium">
                   {t('SETTINGS.NUMBER_OF_EARTHQUAKES')}
                 </h1>
-                <p className="text-gray-300 text-sm italic">
-                  ({t('SETTINGS.DEFAULT')}: 20)
-                </p>
               </div>
               <div className="flex items-end">
                 <input
@@ -270,9 +260,6 @@ export const SettingsList = () => {
                 <h1 className="text-white text-lg font-medium">
                   {t('SETTINGS.GLOBE_ROTATION')}
                 </h1>
-                <p className="text-gray-300 text-sm italic">
-                  ({t('SETTINGS.DEFAULT')}: {t('GENERIC.NO')})
-                </p>
               </div>
               <div className="flex items-end">
                 <input
@@ -290,9 +277,6 @@ export const SettingsList = () => {
                 <h1 className="text-white text-lg font-medium">
                   {t('SETTINGS.DOT_PULSING')}
                 </h1>
-                <p className="text-gray-300 text-sm italic">
-                  ({t('SETTINGS.DEFAULT')}: {t('GENERIC.YES')})
-                </p>
               </div>
               <div className="flex items-end">
                 <input
@@ -310,9 +294,6 @@ export const SettingsList = () => {
                 <h1 className="text-white text-lg font-medium">
                   {t('SETTINGS.PROJECTION')}
                 </h1>
-                <p className="text-gray-300 text-sm italic">
-                  ({t('SETTINGS.DEFAULT')}: Globe)
-                </p>
               </div>
               <div className="w-full mt-auto">
                 <ReactSelect />

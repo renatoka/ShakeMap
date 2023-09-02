@@ -25,7 +25,6 @@ import { join } from 'path';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'frontend', 'dist'),
-      exclude: ['/api*'],
     }),
     ScheduleModule.forRoot(),
     UsersModule,

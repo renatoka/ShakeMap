@@ -65,8 +65,9 @@ export const PulsingDot = ({
           data-tooltip-id={`tooltip-${unid}`}
         >
           <div
-            className={`absolute top-0 left-0 border-2 border-white ${pulsing ? 'animate-ping' : 'animate-none'
-              }`}
+            className={`absolute top-0 left-0 border-2 border-white ${
+              pulsing ? 'animate-ping' : 'animate-none'
+            }`}
             style={{
               width: '12px',
               height: '12px',
@@ -168,7 +169,11 @@ export const SubscribeModal = () => {
       const validation = validate(inputs);
       if (validation.success) {
         setIsSubmitted(true);
-        setErrors({} as Inputs);
+        setErrors({
+          firstName: '',
+          lastName: '',
+          email: '',
+        });
         await dispatch(createUser(inputs));
       } else {
         validation.errors.forEach((err: any) => {
@@ -251,4 +256,4 @@ export const SubscribeModal = () => {
       </div>
     </motion.div>
   );
-}
+};

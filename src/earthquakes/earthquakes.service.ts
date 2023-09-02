@@ -56,21 +56,20 @@ export class EarthquakesService {
 
   async delete() {
     try {
+      const start = new Date(new Date().setDate(new Date().getDate() - 1));
+      const end = new Date(new Date().setDate(new Date().getDate() - 1));
+      start.setHours(0, 0, 0, 0);
+      end.setHours(23, 59, 59, 999);
+      const where = Prisma.validator<Prisma.EarthquakesWhereInput>()({
+        time: { gte: start, lte: end },
+      });
       const count = await this.prisma.earthquakes.count({
-        where: {
-          time: {
-            lte: new Date(new Date().setDate(new Date().getDate() - 1)),
-          },
-        },
+        where,
       });
       await this.prisma.earthquakes.deleteMany({
-        where: {
-          time: {
-            lte: new Date(new Date().setDate(new Date().getDate() - 1)),
-          },
-        },
+        where,
       });
-      return count;
+      return { count };
     } catch (error) {
       return error;
     }
