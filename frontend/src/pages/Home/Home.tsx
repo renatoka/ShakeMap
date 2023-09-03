@@ -1,14 +1,15 @@
-import { useCallback, useEffect, useState } from 'react';
-import Map, { MapRef } from 'react-map-gl';
 import { PulsingDot, SubscribeModal } from '../../components/components';
-import { RotatingSpeed } from '../../helpers/rotatingSpeed.services';
-import { RouteErrorProps } from '../../interfaces/interfaces.types';
+import { ErrorProps } from '../../interfaces/interfaces.types';
 import { getMapboxToken } from '../../redux/actions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { ErrorPage } from '../ErrorPage/ErrorPage';
+import { determineRotateSpeed } from '../../services/services';
+import ErrorPage from '../Error/Error';
 import { Sidebar } from './components';
+import 'maplibre-gl/dist/maplibre-gl.css';
+import { useCallback, useEffect, useState } from 'react';
+import { Map, MapRef } from 'react-map-gl';
 
-export const Main = () => {
+const Main = () => {
   const dispatch = useAppDispatch();
   const { mapboxToken, loading, error } = useAppSelector(
     (state) => state.mapboxToken,
@@ -17,7 +18,8 @@ export const Main = () => {
   const { rotating, projection, showSubscribeModal } = useAppSelector(
     (state) => state.settings,
   );
-  const [actionModalData, setActionModalData] = useState<RouteErrorProps>();
+
+  const [actionModalData, setActionModalData] = useState<ErrorProps>();
   const [mapRef, setMapRef] = useState<MapRef | null>(null);
   const [userInteracting, setUserInteracting] = useState<boolean>(false);
   const [zoom, setZoom] = useState<number>(1.5);
@@ -37,44 +39,22 @@ export const Main = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (projection != 'globe') {
-      setViewState({
-        ...viewState,
-        latitude: 0,
-      });
+    if (projection !== 'globe') {
+      setViewState({ ...viewState, latitude: 0 });
+    } else {
+      setViewState({ ...viewState, latitude: 20 });
     }
-    setViewState({
-      ...viewState,
-      latitude: 20,
-    });
   }, [projection]);
 
   useEffect(() => {
-    switch (true) {
-      case window.innerWidth < 768 && window.innerWidth > 310:
-        setViewState({
-          ...viewState,
-          zoom: 0.8,
-        });
-        break;
-      case window.innerWidth < 1024 && window.innerWidth > 768:
-        setViewState({
-          ...viewState,
-          zoom: 1.2,
-        });
-        break;
-      case window.innerWidth < 1440 && window.innerWidth > 1024:
-        setViewState({
-          ...viewState,
-          zoom: 1.5,
-        });
-        break;
-      default:
-        setViewState({
-          ...viewState,
-          zoom: 1.8,
-        });
-        break;
+    if (window.innerWidth < 768 && window.innerWidth > 310) {
+      setViewState({ ...viewState, zoom: 0.8 });
+    } else if (window.innerWidth < 1024 && window.innerWidth > 768) {
+      setViewState({ ...viewState, zoom: 1.2 });
+    } else if (window.innerWidth < 1440 && window.innerWidth > 1024) {
+      setViewState({ ...viewState, zoom: 1.5 });
+    } else {
+      setViewState({ ...viewState, zoom: 1.8 });
     }
   }, [window.innerWidth]);
 
@@ -82,15 +62,10 @@ export const Main = () => {
     let description = '';
     let title = 'Hold on!';
 
-    switch (true) {
-      case loading:
-        description = 'We are loading the map for you.';
-        break;
-      case error:
-        description = 'We are having some issues loading the map.';
-        break;
-      default:
-        break;
+    if (loading) {
+      description = 'We are loading the map for you.';
+    } else if (error) {
+      description = 'We are having some issues loading the map.';
     }
 
     if (description) {
@@ -133,6 +108,7 @@ export const Main = () => {
         duration: 100,
         easing: (t: number) => t,
       });
+      setZoomInCoordinates(undefined);
     }
   }, [userInteracting, mapRef, projection]);
 
@@ -140,50 +116,49 @@ export const Main = () => {
     if (rotating && !userInteracting) {
       const interval = setInterval(() => {
         spinGlobe();
-      }, RotatingSpeed({ zoom }));
+      }, determineRotateSpeed({ zoom }));
       return () => clearInterval(interval);
     }
   }, [rotating, userInteracting, spinGlobe, zoom]);
 
   useEffect(() => {
-    if (!mapRef) {
-      return;
+    if (mapRef) {
+      mapRef.on('mousedown', () => {
+        setUserInteractingCallback(true);
+      });
+      mapRef.on('mouseup', () => {
+        setUserInteractingCallback(false);
+      });
+      mapRef.on('touchstart', () => {
+        setUserInteractingCallback(true);
+      });
+      mapRef.on('touchend', () => {
+        setUserInteractingCallback(false);
+      });
     }
-    mapRef?.on('mousedown', () => {
-      setUserInteractingCallback(true);
-    });
-    mapRef?.on('mouseup', () => {
-      setUserInteractingCallback(false);
-    });
-    mapRef?.on('touchstart', () => {
-      setUserInteractingCallback(true);
-    });
-    mapRef?.on('touchend', () => {
-      setUserInteractingCallback(false);
-    });
   }, [mapRef, setUserInteractingCallback]);
 
   return (
     <>
-      {actionModalData?.title && actionModalData?.description && (
+      {loading || error ? (
         <ErrorPage
-          title={actionModalData.title}
-          description={actionModalData.description}
+          title={actionModalData?.title!}
+          description={actionModalData?.description!}
         />
-      )}
+      ) : null}
       {mapboxToken && (
         <>
           <Map
             {...viewState}
-            projection={projection as any}
-            optimizeForTerrain={true}
+            projection={projection as unknown as any}
             onMove={(event) => setViewState(event.viewState)}
             onZoom={(event) => setZoom(event.viewState.zoom)}
             style={{ width: '100vw', height: '100vh' }}
             mapStyle="mapbox://styles/rkauric/clftyk5ry007v01o5hw5kdzpr"
             mapboxAccessToken={mapboxToken}
-            ref={(map) => setMapRef(map)}
+            // mapStyle="https://api.maptiler.com/maps/satellite/style.json?key=IZw1Xv9ZrICvrXjNks8s"
             reuseMaps={true}
+            ref={(ref) => setMapRef(ref)}
           >
             {earthquakesData &&
               earthquakesData.length > 0 &&
@@ -201,3 +176,5 @@ export const Main = () => {
     </>
   );
 };
+
+export default Main;

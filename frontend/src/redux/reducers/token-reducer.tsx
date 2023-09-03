@@ -1,9 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
 import {
+  MAPBOX_TOKEN_FAIL,
   MAPBOX_TOKEN_REQUEST,
   MAPBOX_TOKEN_SUCCESS,
-  MAPBOX_TOKEN_FAIL,
 } from '../constants/token-constants';
+import { createSlice } from '@reduxjs/toolkit';
 
 // extend the Action interface to include a payload property
 declare module 'redux' {

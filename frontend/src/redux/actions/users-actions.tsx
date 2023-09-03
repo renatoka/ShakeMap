@@ -1,9 +1,9 @@
-import axios from 'axios';
 import {
+  CREATE_USER_FAIL,
   CREATE_USER_REQUEST,
   CREATE_USER_SUCCESS,
-  CREATE_USER_FAIL,
 } from '../constants/users-constants';
+import axios from 'axios';
 
 export const createUser =
   (inputs: { firstName: string; lastName: string; email: string }) =>

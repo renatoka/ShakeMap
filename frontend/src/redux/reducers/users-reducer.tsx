@@ -1,9 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
 import {
+  CREATE_USER_FAIL,
   CREATE_USER_REQUEST,
   CREATE_USER_SUCCESS,
-  CREATE_USER_FAIL,
 } from '../constants/users-constants';
+import { createSlice } from '@reduxjs/toolkit';
 
 // extend the Action interface to include a payload property
 declare module 'redux' {
