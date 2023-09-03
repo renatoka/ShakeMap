@@ -10,20 +10,9 @@ export class EarthquakesController {
   @Get()
   async getAllEarthquakes(
     @Res() res,
-    @Query() query: GetEarthquakesDTO,
+    @Query() dto: GetEarthquakesDTO,
   ): EarthquakePromise {
-    const response = await this.earthquakeService.getAllEarthquakes(query);
-    res.set('X-Total-Count', response.count);
-    return res.json(response.earthquakes);
-  }
-
-  @Get('/by-date')
-  async fetchAndGetEarthquakesByDate(
-    @Res() res,
-    @Query() query: GetEarthquakesDTO,
-  ): EarthquakePromise {
-    const response =
-      await this.earthquakeService.fetchAndGetEarthquakesByDate(query);
+    const response = await this.earthquakeService.fetchEarthquakes(dto);
     res.set('X-Total-Count', response.count);
     return res.json(response.earthquakes);
   }

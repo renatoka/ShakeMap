@@ -4,6 +4,10 @@ import { ConfigService } from '@nestjs/config';
 export class MapboxTokenService {
   constructor(private configService: ConfigService) {}
   getToken(): string {
-    return this.configService.get('MAPBOX_TOKEN');
+    const token = this.configService.get('MAPBOX_TOKEN');
+    if (!token) {
+      throw new Error('Mapbox token not configured');
+    }
+    return token;
   }
 }

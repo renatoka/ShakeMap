@@ -8,7 +8,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class CronService {
-  private logger = new Logger(CronService.name);
+  private readonly logger = new Logger(CronService.name);
   constructor(
     private earthquakesService: EarthquakesService,
     private users: UsersService,
@@ -17,7 +17,7 @@ export class CronService {
     private jwt: JwtService,
   ) {}
 
-  @Cron(CronExpression.EVERY_5_MINUTES)
+  @Cron(CronExpression.EVERY_10_MINUTES)
   async checkForEarthquakes() {
     try {
       const start = new Date(new Date().setHours(0, 0, 0, 0));
@@ -27,21 +27,19 @@ export class CronService {
         end: end.toISOString(),
         limit: 1000,
       });
-      Logger.log('Fetched earthquakes from API.');
+      this.logger.log('CRON: Fetched earthquakes.');
     } catch (error) {
-      Logger.error(error, 'CRON');
+      this.logger.error(error, 'CRON');
     }
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async deleteOldEarthquakes() {
     try {
-      const deleteProcess = await this.earthquakesService.delete();
-      Logger.log(
-        `CRON: Deleted ${deleteProcess.count} earthquakes from database.`,
-      );
+      const count = await this.earthquakesService.delete();
+      this.logger.log(`CRON: Deleted ${count} old earthquakes.`);
     } catch (error) {
-      Logger.error(error, 'CRON');
+      this.logger.error(error, 'CRON');
     }
   }
 
@@ -73,7 +71,7 @@ export class CronService {
         await this.mailer.sendMail(mailData, 'newsletter');
       });
     } else {
-      console.log('No subscribers to send email to.');
+      this.logger.log('CRON: No subscribers found.');
     }
   }
 

@@ -1,7 +1,7 @@
 import { EarthquakePromise } from '@/interfaces';
 import { PrismaService } from '@/prisma/prisma.service';
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { firstValueFrom } from 'rxjs';
 import { CreateEarthquakesDto } from './dto/create-earthquakes.dto';
@@ -9,13 +9,43 @@ import { GetEarthquakesDTO } from './dto/get-earthquakes.dto';
 
 @Injectable()
 export class EarthquakesService {
+  private readonly logger = new Logger(EarthquakesService.name);
+
   constructor(
     private httpService: HttpService,
     private prisma: PrismaService,
   ) {}
 
-  async create(createEarthquakeDTO: CreateEarthquakesDto) {
-    const { earthquakes } = createEarthquakeDTO;
+  async hasEarthquakeData(): Promise<boolean> {
+    const count = await this.prisma.earthquakes.count();
+    return count > 0;
+  }
+
+  async seedEarthquakes() {
+    const hasData = await this.hasEarthquakeData();
+
+    if (!hasData) {
+      const startDate = new Date(new Date().setHours(0, 0, 0, 0));
+      const endDate = new Date();
+      const limit = 1000;
+
+      try {
+        const result = await this.fetchEarthquakes({
+          start: startDate.toISOString(),
+          end: endDate.toISOString(),
+          limit,
+        });
+        return result;
+      } catch (error) {
+        console.error('Error seeding earthquake data:', error);
+        throw error;
+      }
+    }
+    return 'Data already seeded.';
+  }
+
+  async create(dto: CreateEarthquakesDto) {
+    const { earthquakes } = dto;
     try {
       const savePromises = earthquakes.map(async (earthquake) => {
         const unid = earthquake.properties['unid'];
@@ -50,58 +80,83 @@ export class EarthquakesService {
 
       return earthquakes;
     } catch (error) {
-      return error;
+      this.logger.error(`Error in create method: ${error.message}`);
+      throw new Error('Failed to create earthquakes');
     }
   }
 
   async delete() {
     try {
-      const start = new Date(new Date().setDate(new Date().getDate() - 1));
-      const end = new Date(new Date().setDate(new Date().getDate() - 1));
-      start.setHours(0, 0, 0, 0);
-      end.setHours(23, 59, 59, 999);
+      const start = getStartOfDay(new Date(new Date().getDate() - 1));
+      const end = getEndOfDay(new Date(new Date().getDate() - 1));
+
       const where = Prisma.validator<Prisma.EarthquakesWhereInput>()({
         time: { gte: start, lte: end },
       });
+
       const count = await this.prisma.earthquakes.count({
         where,
       });
+
       await this.prisma.earthquakes.deleteMany({
         where,
       });
+
       return { count };
     } catch (error) {
-      return error;
+      this.logger.error(`Error in delete method: ${error.message}`);
+      throw new Error('Failed to delete earthquakes');
     }
   }
 
   async fetchEarthquakes(
     getEarthquakesDTO: GetEarthquakesDTO,
   ): EarthquakePromise {
-    const { start, end } = getEarthquakesDTO;
+    const { start, end, limit } = getEarthquakesDTO;
     try {
-      const response = await firstValueFrom(
-        this.httpService.get(
-          `https://www.seismicportal.eu/fdsnws/event/1/query?&format=json&start=${start}&end=${end}`,
-        ),
-      );
-      response.data.features.map((feature: any) => {
-        delete feature.geometry;
-        delete feature.type;
-        delete feature.id;
+      const where = Prisma.validator<Prisma.EarthquakesWhereInput>()({
+        time: { gte: start, lte: end },
       });
-      await this.create({ earthquakes: response.data.features });
 
-      return {
-        earthquakes: response.data.features,
-        count: response.data.features.length,
-      };
+      const count = await this.prisma.earthquakes.count({
+        where,
+      });
+
+      if (count === 0) {
+        const response = await firstValueFrom(
+          this.httpService.get(
+            `https://www.seismicportal.eu/fdsnws/event/1/query?&format=json&start=${start}&end=${end}`,
+          ),
+        );
+
+        response.data.features.map((feature: any) => {
+          delete feature.geometry;
+          delete feature.type;
+          delete feature.id;
+        });
+
+        await this.create({ earthquakes: response.data.features });
+
+        const earthquakes = await this.prisma.earthquakes.findMany({
+          where,
+          take: limit,
+          orderBy: {
+            time: 'desc',
+          },
+        });
+
+        return { earthquakes, count };
+      } else {
+        const response = await this.getEarthquakes(getEarthquakesDTO);
+        return { earthquakes: response.earthquakes, count: response.count };
+      }
     } catch (error) {
-      return error;
+      this.logger.error(`Error in fetchEarthquakes method: ${error.message}`);
+      throw new Error('Failed to fetch earthquakes');
     }
   }
 
-  async getAllEarthquakes(
+  async getEarthquakes(
     getEarthquakesDTO: GetEarthquakesDTO,
   ): EarthquakePromise {
     const { limit, start, end } = getEarthquakesDTO;
@@ -111,14 +166,16 @@ export class EarthquakesService {
         ...(!start &&
           !end && {
             time: {
-              gte: new Date(new Date().setHours(0, 0, 0, 0)),
+              gte: getStartOfDay(new Date()),
               lte: new Date(),
             },
           }),
       });
+
       const count = await this.prisma.earthquakes.count({
         where,
       });
+
       const earthquakes = await this.prisma.earthquakes.findMany({
         where,
         take: limit,
@@ -129,47 +186,24 @@ export class EarthquakesService {
 
       return { earthquakes, count };
     } catch (error) {
-      return error;
-    }
-  }
-
-  async fetchAndGetEarthquakesByDate(
-    getEarthquakesDTO: GetEarthquakesDTO,
-  ): Promise<EarthquakePromise> {
-    const { start, end, limit } = getEarthquakesDTO;
-    try {
-      await this.fetchEarthquakes(getEarthquakesDTO);
-      const where = Prisma.validator<Prisma.EarthquakesWhereInput>()({
-        time: { gte: start, lte: end },
-      });
-      const count = await this.prisma.earthquakes.count({
-        where,
-      });
-      const earthquakes = await this.prisma.earthquakes.findMany({
-        where,
-        take: limit,
-        orderBy: {
-          time: 'desc',
-        },
-      });
-      return { earthquakes, count };
-    } catch (error) {
-      return { error };
+      this.logger.error(`Error in getAllEarthquakes method: ${error.message}`);
+      throw new Error('Failed to fetch earthquakes');
     }
   }
 
   async findForNewsletter() {
-    const start = new Date(new Date().setDate(new Date().getDate() - 1));
-    const end = new Date(new Date().setDate(new Date().getDate() - 1));
-    start.setHours(0, 0, 0, 0);
-    end.setHours(23, 59, 59, 999);
+    const start = getStartOfDay(new Date(new Date().getDate() - 1));
+    const end = getEndOfDay(new Date(new Date().getDate() - 1));
+
     try {
       const where = Prisma.validator<Prisma.EarthquakesWhereInput>()({
         time: { gte: start, lte: end },
       });
+
       const count = await this.prisma.earthquakes.count({
         where,
       });
+
       const earthquakes = await this.prisma.earthquakes.findMany({
         where,
         orderBy: {
@@ -182,9 +216,22 @@ export class EarthquakesService {
 
       return { region, count, strongest };
     } catch (error) {
-      return error;
+      this.logger.error(`Error in findForNewsletter method: ${error.message}`);
+      throw new Error('Failed to find earthquakes for newsletter');
     }
   }
+}
+
+function getStartOfDay(date: Date): Date {
+  const start = new Date(date);
+  start.setHours(0, 0, 0, 0);
+  return start;
+}
+
+function getEndOfDay(date: Date): Date {
+  const end = new Date(date);
+  end.setHours(23, 59, 59, 999);
+  return end;
 }
 
 async function findMostActiveRegion(
