@@ -1,6 +1,6 @@
-import { RouteErrorProps } from '../../interfaces';
+import { ErrorProps } from '../../interfaces';
 
-export const ErrorPage = ({ title, description }: RouteErrorProps) => {
+const ErrorScreen = ({ title, description }: ErrorProps) => {
   return (
     <div className="flex justify-center items-center h-screen bg-black">
       <div className="flex flex-col justify-center items-center text-center font-montserrat">
@@ -12,3 +12,5 @@ export const ErrorPage = ({ title, description }: RouteErrorProps) => {
     </div>
   );
 };
+
+export default ErrorScreen;

@@ -1,21 +1,21 @@
-import { Marker } from 'react-map-gl';
-import { useEffect, useMemo, useState } from 'react';
 import { PulsingDotProps } from '../interfaces';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { Colouring } from '../helpers/colouring.services';
-import Tippy from '@tippyjs/react';
-import Select from 'react-select';
+import { InputProps } from '../interfaces';
 import {
   setProjectionAction,
   setShowSubscribeModalAction,
 } from '../redux/actions';
-import { motion } from 'framer-motion';
-import CloseIcon from '@mui/icons-material/Close';
-import { validate } from '../helpers/functions';
-import { Inputs } from '../interfaces';
-import { useTranslation } from 'react-i18next';
-import CheckIcon from '@mui/icons-material/Check';
 import { createUser } from '../redux/actions/users-actions';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { colourMarker } from '../services/services';
+import { validate } from '../services/services';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import Tippy from '@tippyjs/react';
+import { motion } from 'framer-motion';
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Marker } from 'react-map-gl';
+import Select from 'react-select';
 
 export const PulsingDot = ({
   lon,
@@ -32,7 +32,7 @@ export const PulsingDot = ({
       width: '12px',
       height: '12px',
       borderRadius: '50%',
-      backgroundColor: Colouring({ magnitude: mag }),
+      backgroundColor: colourMarker({ magnitude: mag }),
     };
   }, [mag]);
 
@@ -72,7 +72,7 @@ export const PulsingDot = ({
               width: '12px',
               height: '12px',
               borderRadius: '50%',
-              backgroundColor: Colouring({ magnitude: mag }),
+              backgroundColor: colourMarker({ magnitude: mag }),
             }}
           ></div>
         </div>
@@ -140,12 +140,12 @@ export const SubscribeModal = () => {
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
   const { error, user } = useAppSelector((state) => state.users);
-  const [errors, setErrors] = useState<Inputs>({
+  const [errors, setErrors] = useState<InputProps>({
     firstName: '',
     lastName: '',
     email: '',
   });
-  const [inputs, setInputs] = useState<Inputs>({
+  const [inputs, setInputs] = useState<InputProps>({
     firstName: '',
     lastName: '',
     email: '',
@@ -255,5 +255,63 @@ export const SubscribeModal = () => {
         </div>
       </div>
     </motion.div>
+  );
+};
+
+export const LanguageSwitcher = () => {
+  const { i18n } = useTranslation();
+  const [showMenu, setShowMenu] = useState<boolean>(false);
+
+  const languages = [
+    {
+      code: 'en',
+      name: 'English',
+      img: 'https://hatscripts.github.io/circle-flags/flags/gb.svg',
+    },
+    {
+      code: 'de',
+      name: 'Deutsch',
+      img: 'https://hatscripts.github.io/circle-flags/flags/de.svg',
+    },
+    {
+      code: 'es',
+      name: 'Español',
+      img: 'https://hatscripts.github.io/circle-flags/flags/es.svg',
+    },
+  ];
+
+  return (
+    <div
+      className="rounded-full"
+      onClick={() => setShowMenu(!showMenu)}
+      tabIndex={-1}
+      onBlur={() => setShowMenu(false)}
+    >
+      {showMenu ? (
+        <div className="flex flex-col gap-2">
+          {languages
+            .filter((lang) => lang.code != i18n.language)
+            .map((lang) => (
+              <img
+                src={lang.img}
+                alt={lang.name}
+                key={lang.code}
+                className="w-6 h-6 lg:w-7 lg:h-7 transition-all duration-500 hover:scale-75 cursor-pointer"
+                onClick={() => {
+                  i18n.changeLanguage(lang.code);
+                  localStorage.setItem('language', lang.code);
+                  setShowMenu(false);
+                }}
+              />
+            ))}
+        </div>
+      ) : (
+        <img
+          src={languages.filter((lang) => lang.code == i18n.language)[0].img}
+          alt={languages.filter((lang) => lang.code == i18n.language)[0].name}
+          className="w-6 h-6 lg:w-7 lg:h-7 transition-all duration-500 hover:scale-90 cursor-pointer"
+        />
+      )}
+    </div>
   );
 };

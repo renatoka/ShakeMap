@@ -1,11 +1,11 @@
-import { useParams } from 'react-router-dom';
+import { getUser, unsubscribeUser } from '../../services/services';
+import { CircularProgress } from '@mui/material';
 import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
-import { getUser, unsubscribeUser } from './helperFunctions';
-import { CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 
-export const UnsubscribePage = () => {
+const Unsubscribe = () => {
   const { token } = useParams<{ token: string }>();
   const [tokenData, setTokenData] = useState<any>({});
   const [user, setUser] = useState<any>({});
@@ -72,3 +72,5 @@ export const UnsubscribePage = () => {
     </div>
   );
 };
+
+export default Unsubscribe;

@@ -1,13 +1,14 @@
 {
   "name": "frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss}\""
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -25,6 +26,8 @@
     "jwt-decode": "^3.1.2",
     "localforage": "^1.10.0",
     "mapbox": "^1.0.0-beta10",
+    "mapbox-gl": "^2.15.0",
+    "maplibre-gl": "^3.3.1",
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",
     "react-datepicker": "^4.16.0",
@@ -39,6 +42,7 @@
     "vite-plugin-rewrite-all": "^1.0.1"
   },
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
     "@types/react": "^18.2.21",
     "@types/react-datepicker": "^4.15.0",
     "@types/react-dom": "^18.2.7",

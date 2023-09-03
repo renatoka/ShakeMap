@@ -1,13 +1,4 @@
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Chip, CircularProgress } from '@mui/material';
-import { motion } from 'framer-motion';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import DatePicker from 'react-datepicker';
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import { ReactSelect } from '../../../components/components';
-import { Colouring } from '../../../helpers/colouring.services';
+import { LanguageSwitcher, ReactSelect } from '../../../components/components';
 import { SidebarProps } from '../../../interfaces';
 import {
   getEarthquakes,
@@ -17,7 +8,17 @@ import {
   setSelectedDateAction,
   setShowSubscribeModalAction,
 } from '../../../redux/actions';
+import { GET_EARTHQUAKES_RESET } from '../../../redux/constants/earthquakes-constants';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { colourMarker } from '../../../services/services';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Chip, CircularProgress } from '@mui/material';
+import { motion } from 'framer-motion';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import DatePicker from 'react-datepicker';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 export const Sidebar = ({
   zoomInCoordinates,
@@ -58,6 +59,7 @@ export const Sidebar = ({
         limit,
       }),
     );
+    dispatch({ type: GET_EARTHQUAKES_RESET });
   };
 
   return (
@@ -181,7 +183,7 @@ export const EarthquakeList = ({ setZoomInCoordinates }: SidebarProps) => {
                 label={'Magnitude ' + earthquake.mag.toFixed(1)}
                 size="small"
                 style={{
-                  backgroundColor: Colouring({
+                  backgroundColor: colourMarker({
                     magnitude: earthquake.mag,
                   }),
                 }}
@@ -195,7 +197,7 @@ export const EarthquakeList = ({ setZoomInCoordinates }: SidebarProps) => {
         </div>
       ),
 
-    [handleEarthquakeClick, earthquakesData],
+    [earthquakesData, handleEarthquakeClick],
   );
 
   return <div className="flex w-full flex-col">{earthquakeElements}</div>;
@@ -244,12 +246,17 @@ export const SettingsList = () => {
               </div>
               <div className="flex items-end">
                 <input
-                  type="text"
+                  type="number"
                   className="w-8 text-center bg-transparent text-white text-lg font-medium border-b-2 border-white focus:outline-none outline-none"
                   defaultValue={limit ? limit : 20}
-                  maxLength={3}
+                  min={1}
+                  max={1000}
                   onInputCapture={(e) => {
-                    dispatch(setLimitAction(parseInt(e.currentTarget.value)));
+                    Number.isNaN(parseInt(e.currentTarget.value))
+                      ? dispatch(setLimitAction(20))
+                      : dispatch(
+                          setLimitAction(parseInt(e.currentTarget.value)),
+                        );
                   }}
                 />
               </div>
@@ -310,64 +317,6 @@ export const SettingsList = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-export const LanguageSwitcher = () => {
-  const { i18n } = useTranslation();
-  const [showMenu, setShowMenu] = useState<boolean>(false);
-
-  const languages = [
-    {
-      code: 'en',
-      name: 'English',
-      img: 'https://hatscripts.github.io/circle-flags/flags/gb.svg',
-    },
-    {
-      code: 'de',
-      name: 'Deutsch',
-      img: 'https://hatscripts.github.io/circle-flags/flags/de.svg',
-    },
-    {
-      code: 'es',
-      name: 'Español',
-      img: 'https://hatscripts.github.io/circle-flags/flags/es.svg',
-    },
-  ];
-
-  return (
-    <div
-      className="rounded-full"
-      onClick={() => setShowMenu(!showMenu)}
-      tabIndex={-1}
-      onBlur={() => setShowMenu(false)}
-    >
-      {showMenu ? (
-        <div className="flex flex-col gap-2">
-          {languages
-            .filter((lang) => lang.code != i18n.language)
-            .map((lang) => (
-              <img
-                src={lang.img}
-                alt={lang.name}
-                key={lang.code}
-                className="w-6 h-6 lg:w-7 lg:h-7 transition-all duration-500 hover:scale-75 cursor-pointer"
-                onClick={() => {
-                  i18n.changeLanguage(lang.code);
-                  localStorage.setItem('language', lang.code);
-                  setShowMenu(false);
-                }}
-              />
-            ))}
-        </div>
-      ) : (
-        <img
-          src={languages.filter((lang) => lang.code == i18n.language)[0].img}
-          alt={languages.filter((lang) => lang.code == i18n.language)[0].name}
-          className="w-6 h-6 lg:w-7 lg:h-7 transition-all duration-500 hover:scale-90 cursor-pointer"
-        />
-      )}
     </div>
   );
 };

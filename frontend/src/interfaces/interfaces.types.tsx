@@ -25,7 +25,7 @@ export type ColouringServiceProps = {
   magnitude: number;
 };
 
-export type RouteErrorProps = {
+export type ErrorProps = {
   title: string;
   description: string;
 };
@@ -34,13 +34,13 @@ export type RotatingSpeedHelperProps = {
   zoom: number;
 };
 
-export interface Inputs {
+export type InputProps = {
   firstName: string;
   lastName: string;
   email: string;
-}
+};
 
-export type ValidateResponse = {
+export type ValidateResponseProps = {
   success: boolean;
   errors: {
     message: string;
