@@ -10,7 +10,6 @@ import { ReactSelect } from '../../../components/components';
 import { Colouring } from '../../../helpers/colouring.services';
 import { SidebarProps } from '../../../interfaces';
 import {
-  fetchAndGetEarthquakesByDate,
   getEarthquakes,
   setDisablePulsingAction,
   setLimitAction,
@@ -53,7 +52,7 @@ export const Sidebar = ({
     );
     const end = new Date(new Date(date).setHours(23, 59, 59, 0)).toISOString();
     await dispatch(
-      fetchAndGetEarthquakesByDate({
+      getEarthquakes({
         start,
         end,
         limit,
